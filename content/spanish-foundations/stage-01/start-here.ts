@@ -1,0 +1,228 @@
+import { createFoundationLesson } from "./lesson-factory";
+
+export const lesson01 = createFoundationLesson({
+  id: "0.1",
+  moduleId: "module-00",
+  title: "How to Learn with Nexo",
+  displayTitle: "Learn Spanish by making the support disappear.",
+  dek: "A useful course does more than show answers. It teaches you to notice a pattern, retrieve it, and use it for a message of your own.",
+  goal: "Use Nexo’s Understand → Observe → Practice → Produce → Review cycle and know why effortful recall matters.",
+  durationMinutes: 18,
+  concepts: ["learning_cycle"],
+  opening: {
+    eyebrow: "Start with the method",
+    heading: "Recognition feels fluent before it is fluent.",
+    paragraphs: [
+      "A translation can make a Spanish sentence feel obvious while it is still visible. That feeling is useful for understanding, but it is not yet the ability to produce the sentence yourself.",
+      "Nexo begins with meaning, lets you observe the language that carries it, and then removes support. Each harder step asks your memory to do more of the work.",
+      "Difficulty is not automatically a problem. A short, successful struggle to retrieve an idea tells your brain that the idea matters and should remain available.",
+    ],
+    spanish: [
+      { text: "Entiendo.", translation: "I understand." },
+      { text: "Observo.", translation: "I observe." },
+      { text: "Practico y produzco.", translation: "I practice and produce." },
+    ],
+  },
+  prediction: {
+    eyebrow: "A learning decision",
+    heading: "You understood a sentence five minutes ago.",
+    context: "Now the Spanish is hidden and you cannot rebuild it immediately.",
+    prompt: "What should you do first?",
+    options: [
+      { id: "retrieve", label: "Try to retrieve it, then check" },
+      { id: "reread", label: "Reread it repeatedly without testing" },
+      { id: "skip", label: "Skip the idea permanently" },
+    ],
+    correctOptionId: "retrieve",
+    correctFeedback: "A genuine retrieval attempt creates evidence about what is available. Checking afterward gives the attempt a precise correction.",
+    incorrectFeedback: "Understanding while the answer is visible does not show that you can retrieve it. Try first, then use support to correct the attempt.",
+  },
+  model: {
+    eyebrow: "The Nexo cycle",
+    heading: "Each phase has a different job.",
+    paragraphs: [
+      "Understand gives the new idea a clear meaning. Observe shows how Spanish packages that meaning. Practice narrows the decision so you can coordinate the pieces accurately.",
+      "Produce removes the choices and asks for a message. Review returns later, when the answer is no longer warm in short-term memory.",
+      "You do not have to feel perfect before moving forward. You need enough understanding to make an honest attempt and enough feedback to know exactly what to change.",
+    ],
+    points: [
+      { label: "01", title: "Understand", description: "Know what communicative problem the Spanish solves." },
+      { label: "02", title: "Observe", description: "Notice the form, order, sound, and contrast in examples." },
+      { label: "03", title: "Practice", description: "Make focused decisions with immediate explanation." },
+      { label: "04", title: "Produce", description: "Create Spanish without being handed the complete answer." },
+      { label: "05", title: "Review", description: "Retrieve the idea again after time has passed." },
+    ],
+  },
+  contrast: {
+    eyebrow: "Two kinds of ease",
+    heading: "Support helps you learn; retrieval shows what you can use.",
+    sides: [
+      { label: "WITH SUPPORT", question: "Can I recognize it?", description: "Examples, translations, and choices lower the load while the pattern becomes visible.", examples: [{ text: "Hola. Me llamo Ana.", translation: "Hello. My name is Ana." }] },
+      { label: "FROM MEMORY", question: "Can I create it?", description: "A blank page or an unheard prompt reveals whether the pattern is available without the model.", examples: [{ text: "Hola. Me llamo Luis.", translation: "Hello. My name is Luis." }] },
+    ],
+    note: "Support is not cheating. The goal is to remove it deliberately, after it has taught you what to notice.",
+  },
+  guided: {
+    eyebrow: "Read the evidence",
+    heading: "You miss an answer, read the explanation, and answer correctly on the second try.",
+    prompt: "What did the correction accomplish?",
+    options: [
+      { id: "evidence", label: "It exposed and repaired a specific gap" },
+      { id: "failure", label: "It proved the lesson failed" },
+      { id: "erase", label: "It erased the first attempt" },
+    ],
+    correctOptionId: "evidence",
+    correctFeedback: "The first attempt stays valuable evidence. The correction adds a clearer pathway without pretending the first attempt never happened.",
+    incorrectFeedback: "A corrected attempt does not erase the original. Together they show what needed support and what became available afterward.",
+  },
+  sort: {
+    eyebrow: "Order the work",
+    heading: "Separate learning support from independent evidence.",
+    prompt: "Place each activity under the role it serves best.",
+    buckets: [
+      { id: "support", label: "LEARN WITH SUPPORT", hint: "make the pattern clear" },
+      { id: "evidence", label: "SHOW INDEPENDENT CONTROL", hint: "retrieve or create" },
+    ],
+    items: [
+      { id: "translation", label: "read a translation", answer: "support" },
+      { id: "model", label: "study two examples", answer: "support" },
+      { id: "blank", label: "complete a blank from memory", answer: "evidence" },
+      { id: "message", label: "write an original message", answer: "evidence" },
+    ],
+  },
+  builder: {
+    eyebrow: "Name the cycle",
+    heading: "Build the learner’s movement in Spanish.",
+    prompt: "Build: I understand, I practice, and I produce.",
+    tokens: ["Entiendo,", "practico", "y produzco."],
+    correctOrder: ["Entiendo,", "practico", "y produzco."],
+    answer: "Entiendo, practico y produzco.",
+    feedback: "The sequence moves from meaning to controlled work and then to independent creation.",
+  },
+  reading: {
+    eyebrow: "Observe a learner",
+    heading: "Marina does not confuse a correction with defeat.",
+    instructions: "Listen or read, then identify how Marina learns.",
+    sentences: [
+      { id: "r1", text: "Primero, Marina escucha y observa.", translation: "First, Marina listens and observes." },
+      { id: "r2", text: "Después, practica sin mirar la respuesta.", translation: "Afterward, she practices without looking at the answer." },
+      { id: "r3", text: "Al final, produce una idea y revisa su error.", translation: "At the end, she produces an idea and reviews her error." },
+    ],
+    questions: [
+      { id: "q1", prompt: "When does Marina stop looking at the answer?", options: [{ id: "practice", label: "During practice" }, { id: "never", label: "Never" }], correctOptionId: "practice", feedback: "Practice begins removing the model so retrieval can do some work.", conceptIds: ["learning_cycle"] },
+      { id: "q2", prompt: "What does she do with the error?", options: [{ id: "review", label: "Reviews it" }, { id: "erase", label: "Pretends it did not happen" }], correctOptionId: "review", feedback: "The error becomes evidence she can use for a precise correction.", conceptIds: ["learning_cycle"] },
+    ],
+  },
+  recall: {
+    eyebrow: "Retrieve the sequence",
+    heading: "Complete the learning actions without choices.",
+    prompt: "Type the missing Spanish action.",
+    items: [
+      { id: "understand", before: "Yo ", after: ". (I understand)", accepted: ["entiendo"], answer: "entiendo", conceptIds: ["learning_cycle"], feedback: "Entiendo names the moment when the message makes sense." },
+      { id: "practice", before: "Yo ", after: ". (I practice)", accepted: ["practico"], answer: "practico", conceptIds: ["learning_cycle"], feedback: "Practico names focused work with the pattern." },
+      { id: "produce", before: "Yo ", after: ". (I produce)", accepted: ["produzco"], answer: "produzco", conceptIds: ["learning_cycle"], feedback: "Produzco names creating a message rather than recognizing one." },
+    ],
+  },
+  production: {
+    eyebrow: "Make the method yours",
+    heading: "Write three simple learning commitments in Spanish.",
+    prompt: "Write one idea with entiendo, one with practico, and one with produzco.",
+    requirements: ["Use entiendo", "Use practico", "Use produzco", "Write three separate ideas"],
+    example: "Entiendo la idea. Practico sin la respuesta. Produzco español.",
+    minimumCharacters: 45,
+    evaluation: {
+      minimumIdeas: 3,
+      requiredGroups: [
+        { accepted: ["entiendo"], missingFeedback: "Add an idea with entiendo." },
+        { accepted: ["practico"], missingFeedback: "Add an idea with practico." },
+        { accepted: ["produzco"], missingFeedback: "Add an idea with produzco." },
+      ],
+      successFeedback: "You named all three active parts of your learning process in Spanish.",
+    },
+  },
+  summary: {
+    eyebrow: "Keep this model",
+    heading: "Fluency grows as support becomes retrieval.",
+    message: "Use the phase that matches the work you need. First clarify; then notice; then make the memory carry more of the message.",
+    ideas: [
+      { label: "UNDERSTAND", question: "What does the message do?", uses: ["meaning", "purpose"] },
+      { label: "PRACTICE", question: "Can I coordinate the pattern?", uses: ["choices", "correction"] },
+      { label: "PRODUCE", question: "Can I create it without the model?", uses: ["retrieval", "original Spanish"] },
+    ],
+  },
+  completion: { title: "You know how the course will ask you to learn.", message: "The next lesson turns that method toward the five Spanish vowels." },
+});
+
+export const lesson02 = createFoundationLesson({
+  id: "0.2", moduleId: "module-00", title: "Hear the Five Vowels", displayTitle: "Five stable vowels make Spanish readable.",
+  dek: "Spanish vowel letters stay much closer to one core sound than English vowels do.",
+  goal: "Recognize and produce the core sounds of a, e, i, o, and u inside common words.", durationMinutes: 20, concepts: ["spanish_vowels"],
+  opening: { eyebrow: "A smaller sound system", heading: "Do not import every English vowel possibility into Spanish.", paragraphs: ["English vowel letters can change dramatically from word to word. Spanish is more stable: each of the five vowel letters points to a consistent core sound.", "That stability is one reason written Spanish becomes readable quickly. If you keep the vowels clean and brief, unfamiliar words often become pronounceable before you know their meaning.", "The goal is not to force an English equivalent. Listen to the Spanish word, notice the vowel, and imitate the whole syllable."], spanish: [{ text: "casa", translation: "house" }, { text: "mesa", translation: "table" }, { text: "vino", translation: "wine" }, { text: "solo", translation: "alone / only" }, { text: "luna", translation: "moon" }] },
+  prediction: { eyebrow: "Hear the center", heading: "Listen to mesa.", context: "The final vowel is written a.", prompt: "Which core vowel closes the word?", options: [{ id: "a", label: "a" }, { id: "e", label: "e" }, { id: "o", label: "o" }], correctOptionId: "a", correctFeedback: "Mesa ends with a clean a sound. Keep it open instead of turning it into an English uh.", incorrectFeedback: "Read the final letter and replay the whole word: me-sa ends in a." },
+  model: { eyebrow: "The five anchors", heading: "Attach each vowel to a reliable Spanish word.", paragraphs: ["A useful anchor is a whole word, not an English spelling trick. Casa holds a, mesa holds e, vino holds i, solo holds o, and luna holds u.", "Spanish vowels do not need an added glide at the end. Keep o in solo compact; do not let it widen into the longer movement common in English go.", "When two vowels appear near each other, their interaction needs later study. For now, make each single vowel clear and stable."], points: [{ label: "A", title: "casa", description: "Open and central: ca-sa." }, { label: "E", title: "mesa", description: "Clear e in both stressed and unstressed position." }, { label: "I", title: "vino", description: "A focused, high vowel; avoid English eye." }, { label: "O", title: "solo", description: "Rounded and compact without an extra glide." }, { label: "U", title: "luna", description: "Rounded u; keep the tongue and lips steady." }] },
+  contrast: { eyebrow: "Stable does not mean identical", heading: "The letter stays anchored even when the word changes.", sides: [{ label: "E", question: "Can you keep e clear?", description: "E remains recognizable across familiar words.", examples: [{ text: "mesa", translation: "table" }, { text: "verde", translation: "green" }] }, { label: "O", question: "Can you avoid the English glide?", description: "O stays compact rather than turning into two sounds.", examples: [{ text: "solo", translation: "alone / only" }, { text: "rojo", translation: "red" }] }], note: "Stress can make a vowel more prominent, but it does not give the letter an entirely new English-style identity." },
+  guided: { eyebrow: "Read from the vowel", heading: "The word is luna.", prompt: "Which anchor vowel appears in the first syllable?", options: [{ id: "u", label: "u" }, { id: "o", label: "o" }, { id: "i", label: "i" }], correctOptionId: "u", correctFeedback: "Luna begins with lu-. The u is the same core vowel you will reuse in música and uno.", incorrectFeedback: "Look at the first syllable lu- and listen again: the anchor is u." },
+  sort: { eyebrow: "Connect sound and spelling", heading: "Sort each word by its first vowel.", prompt: "Choose a word, then place it under its first written vowel.", buckets: [{ id: "a", label: "A", hint: "casa" }, { id: "e", label: "E", hint: "mesa" }, { id: "i", label: "I", hint: "vino" }, { id: "o", label: "O", hint: "solo" }, { id: "u", label: "U", hint: "luna" }], items: [{ id: "amigo", label: "amigo", answer: "a" }, { id: "escuela", label: "escuela", answer: "e" }, { id: "isla", label: "isla", answer: "i" }, { id: "otro", label: "otro", answer: "o" }, { id: "uno", label: "uno", answer: "u" }] },
+  builder: { eyebrow: "Build a sound inventory", heading: "Put the five vowel anchors in order.", prompt: "Build the Spanish vowel sequence.", tokens: ["a,", "e,", "i,", "o,", "u"], correctOrder: ["a,", "e,", "i,", "o,", "u"], answer: "a, e, i, o, u", feedback: "These five stable anchors support the spelling and pronunciation work that follows." },
+  reading: { eyebrow: "Listen inside a message", heading: "The vowels live inside ordinary words.", instructions: "Listen to each sentence, then answer from the spelling and sound.", sentences: [{ id: "r1", text: "Ana toma café.", translation: "Ana drinks coffee." }, { id: "r2", text: "Luis vive en Lima.", translation: "Luis lives in Lima." }, { id: "r3", text: "Rosa usa una computadora.", translation: "Rosa uses a computer." }], questions: [{ id: "q1", prompt: "Which sentence repeats the i sound several times?", options: [{ id: "r1", label: "Ana toma café" }, { id: "r2", label: "Luis vive en Lima" }], correctOptionId: "r2", feedback: "Vive and Lima give the i anchor repeated practice.", conceptIds: ["spanish_vowels"] }, { id: "q2", prompt: "Which word begins with u?", options: [{ id: "usa", label: "usa" }, { id: "rosa", label: "Rosa" }], correctOptionId: "usa", feedback: "Usa begins with the stable u sound.", conceptIds: ["spanish_vowels"] }] },
+  recall: { eyebrow: "Retrieve the anchor", heading: "Complete each word from its meaning.", prompt: "Type the missing vowel.", items: [{ id: "casa", before: "c", after: "sa (house)", accepted: ["a"], answer: "a", conceptIds: ["spanish_vowels"], feedback: "Casa uses the a anchor." }, { id: "vino", before: "v", after: "no (wine)", accepted: ["i"], answer: "i", conceptIds: ["spanish_vowels"], feedback: "Vino uses i in the first syllable." }, { id: "luna", before: "l", after: "na (moon)", accepted: ["u"], answer: "u", conceptIds: ["spanish_vowels"], feedback: "Luna begins with u." }] },
+  production: { eyebrow: "Use every vowel", heading: "Write five anchor words from memory.", prompt: "Write five separate ideas: A: casa. E: mesa. Continue through u with any correct anchor word from the lesson.", requirements: ["Include a", "Include e", "Include i", "Include o", "Include u"], example: "A: casa. E: mesa. I: vino. O: solo. U: luna.", minimumCharacters: 35, evaluation: { minimumIdeas: 5, requiredGroups: [{ accepted: ["casa", "ana", "amigo"], missingFeedback: "Add an a anchor word." }, { accepted: ["mesa", "escuela", "verde"], missingFeedback: "Add an e anchor word." }, { accepted: ["vino", "isla", "lima"], missingFeedback: "Add an i anchor word." }, { accepted: ["solo", "otro", "rojo"], missingFeedback: "Add an o anchor word." }, { accepted: ["luna", "uno", "usa"], missingFeedback: "Add a u anchor word." }], successFeedback: "You retrieved one usable word for every Spanish vowel anchor." } },
+  summary: { eyebrow: "Keep the anchors", heading: "One letter, one dependable center.", message: "Spanish spelling becomes useful when you resist importing English vowel shifts and keep each vowel clean.", ideas: [{ label: "A / E", question: "Can I hear casa and mesa distinctly?", uses: ["open a", "clear e"] }, { label: "I / O", question: "Can I avoid eye and the English o glide?", uses: ["focused i", "compact o"] }, { label: "U", question: "Can I hold the rounded sound steady?", uses: ["luna", "uno"] }] },
+  completion: { title: "The five vowel anchors are in place.", message: "Next, you will handle consonant sounds that English speakers often misread." },
+});
+
+export const lesson03 = createFoundationLesson({
+  id: "0.3", moduleId: "module-00", title: "Sounds English Speakers Miss", displayTitle: "Read Spanish letters on Spanish terms.",
+  dek: "Several familiar letters represent different habits in Spanish. Small changes make speech much easier to understand.",
+  goal: "Recognize and produce high-value Spanish consonant patterns: h, j, ñ, r/rr, and b/v.", durationMinutes: 22, concepts: ["spanish_consonants"],
+  opening: { eyebrow: "Reset the familiar letters", heading: "The alphabet looks familiar, but the sound agreements are not identical.", paragraphs: ["Spanish uses many of the same letters as English, which makes reading approachable. The danger is assuming each familiar shape must keep its English sound.", "A written h is silent. J carries a strong breathy sound. Ñ is its own letter. A single r and a written rr create different tongue actions, and b and v do not maintain the English contrast learners often expect.", "You do not need a perfect accent today. You need a reliable map that prevents the most disruptive English substitutions."], spanish: [{ text: "hola", translation: "hello" }, { text: "José", translation: "José" }, { text: "niño", translation: "boy" }, { text: "caro", translation: "expensive" }, { text: "carro", translation: "car" }, { text: "vino", translation: "wine" }] },
+  prediction: { eyebrow: "A silent clue", heading: "Read hola.", context: "The first letter is h.", prompt: "What should happen to the h?", options: [{ id: "silent", label: "It stays silent" }, { id: "english", label: "It sounds like English h" }, { id: "j", label: "It sounds like Spanish j" }], correctOptionId: "silent", correctFeedback: "Spanish h is silent: hola begins directly with the vowel sound.", incorrectFeedback: "Do not add breath for written h. Begin hola at the vowel." },
+  model: { eyebrow: "Five high-value adjustments", heading: "Map the letter to a physical action.", paragraphs: ["For h, do nothing. For j, let air pass with friction farther back in the mouth. For ñ, let the middle of the tongue rise as in the middle of canyon.", "A single r between vowels is a quick tap. Written rr is a stronger repeated or sustained tongue action. Even before the trill is perfect, preserve the difference in effort.", "Spanish b and v belong to one sound family in most varieties. Their exact realization changes by position, but you should not force the strong English v sound."], points: [{ label: "H", title: "silent", description: "hola, ahora" }, { label: "J", title: "breathy friction", description: "José, trabajo" }, { label: "Ñ", title: "one Spanish letter", description: "niño, mañana" }, { label: "R / RR", title: "tap versus stronger r", description: "caro, carro" }, { label: "B / V", title: "one sound family", description: "boca, vino" }] },
+  contrast: { eyebrow: "A meaningful contrast", heading: "The amount of r can separate words.", sides: [{ label: "R", question: "A quick tap?", description: "A single r between vowels is brief.", examples: [{ text: "caro", translation: "expensive" }, { text: "pero", translation: "but" }] }, { label: "RR", question: "A stronger repeated r?", description: "Written rr marks a more forceful sound.", examples: [{ text: "carro", translation: "car" }, { text: "perro", translation: "dog" }] }], note: "Aim first for a clear contrast. A developing trill is more useful than avoiding every word with rr." },
+  guided: { eyebrow: "Protect the spelling", heading: "The word is niño.", prompt: "Which letter represents the sound in the middle?", options: [{ id: "enie", label: "ñ" }, { id: "n", label: "n" }, { id: "j", label: "j" }], correctOptionId: "enie", correctFeedback: "Niño contains ñ, a separate letter whose sound joins the consonant and a y-like movement.", incorrectFeedback: "The spelling is ni-ño. The tilde makes ñ a distinct letter." },
+  sort: { eyebrow: "Match the adjustment", heading: "Sort words by the sound rule they demonstrate.", prompt: "Place each word under its key consonant pattern.", buckets: [{ id: "silent-h", label: "SILENT H", hint: "begin at the vowel" }, { id: "j", label: "SPANISH J", hint: "breathy friction" }, { id: "enie", label: "Ñ", hint: "one letter" }, { id: "strong-r", label: "RR", hint: "stronger r" }, { id: "bv", label: "B / V FAMILY", hint: "do not force English v" }], items: [{ id: "hola", label: "hola", answer: "silent-h" }, { id: "jose", label: "José", answer: "j" }, { id: "manana", label: "mañana", answer: "enie" }, { id: "perro", label: "perro", answer: "strong-r" }, { id: "vino", label: "vino", answer: "bv" }] },
+  builder: { eyebrow: "Build a contrast", heading: "Use both r patterns in one message.", prompt: "Build: The car is expensive.", tokens: ["El carro", "es", "caro."], correctOrder: ["El carro", "es", "caro."], answer: "El carro es caro.", feedback: "Carro uses rr for the vehicle; caro uses the single tap for expensive." },
+  reading: { eyebrow: "Hear the map in context", heading: "One sentence can carry several adjustments.", instructions: "Listen closely, then identify the spelling rule.", sentences: [{ id: "r1", text: "Hola, me llamo José.", translation: "Hello, my name is José." }, { id: "r2", text: "Mañana viajo con mi perro.", translation: "Tomorrow I travel with my dog." }, { id: "r3", text: "El vino es bueno.", translation: "The wine is good." }], questions: [{ id: "q1", prompt: "Which written letter is silent in the greeting?", options: [{ id: "h", label: "h" }, { id: "j", label: "j" }], correctOptionId: "h", feedback: "Hola begins at the vowel because h is silent.", conceptIds: ["spanish_consonants"] }, { id: "q2", prompt: "Which word contains the stronger written r?", options: [{ id: "perro", label: "perro" }, { id: "vino", label: "vino" }], correctOptionId: "perro", feedback: "The spelling rr signals the stronger r in perro.", conceptIds: ["spanish_consonants"] }] },
+  recall: { eyebrow: "Write the sound clue", heading: "Restore the missing Spanish spelling.", prompt: "Type the letter or letter pair that completes each word.", items: [{ id: "hola", before: "", after: "ola (hello; silent letter)", accepted: ["h"], answer: "h", conceptIds: ["spanish_consonants"], feedback: "Hola is written with h even though the h is silent." }, { id: "nino", before: "ni", after: "o (boy)", accepted: ["ñ"], answer: "ñ", conceptIds: ["spanish_consonants"], feedback: "Niño requires the distinct letter ñ." }, { id: "perro", before: "pe", after: "o (dog)", accepted: ["rr"], answer: "rr", conceptIds: ["spanish_consonants"], feedback: "Perro uses rr; pero with one r means but." }] },
+  production: { eyebrow: "Protect three patterns", heading: "Write three short sound reminders.", prompt: "Write one complete idea with hola, one with niño or mañana, and one with perro or carro.", requirements: ["Use a silent-h word", "Use ñ", "Use rr", "Write three separate ideas"], example: "Hola, Ana. El niño está aquí. El perro es bueno.", minimumCharacters: 40, evaluation: { minimumIdeas: 3, requiredGroups: [{ accepted: ["hola", "ahora"], missingFeedback: "Add a word with silent h." }, { accepted: ["niño", "niña", "mañana"], missingFeedback: "Add a word with ñ." }, { accepted: ["perro", "carro"], missingFeedback: "Add a word with rr." }], successFeedback: "Your writing preserves three Spanish sound patterns that English spelling habits often distort." } },
+  summary: { eyebrow: "Keep the map", heading: "Familiar letters need Spanish instructions.", message: "Read h as silent, j as breathy friction, ñ as one letter, r/rr as a real contrast, and b/v as one sound family.", ideas: [{ label: "H / J", question: "Silence or friction?", uses: ["hola", "José"] }, { label: "Ñ", question: "Is the tilde present?", uses: ["niño", "mañana"] }, { label: "R / RR", question: "Quick tap or stronger r?", uses: ["caro", "carro"] }] },
+  completion: { title: "The highest-impact consonant adjustments are visible.", message: "Next, spelling will tell you which syllable receives stress." },
+});
+
+export const lesson04 = createFoundationLesson({
+  id: "0.4", moduleId: "module-00", title: "Stress, Accents & Spelling", displayTitle: "Spanish spelling tells you where the word leans.",
+  dek: "Most words follow two default stress rules. A written accent marks the important exceptions—and sometimes separates meanings.",
+  goal: "Predict default word stress, use written accents as instructions, and preserve meaningful accent marks.", durationMinutes: 24, concepts: ["stress_rules", "accent_marks"],
+  opening: { eyebrow: "Stress is structure", heading: "A word has a center of gravity.", paragraphs: ["Stress is the syllable that receives the strongest prominence in a word. Spanish spelling makes that location far more predictable than English spelling does.", "If a word ends in a vowel, n, or s, the default stress falls on the next-to-last syllable. If it ends in another consonant, the default falls on the last syllable.", "A written accent overrides the default or distinguishes words. The mark is part of the spelling, not an optional sign of emphasis."], spanish: [{ text: "casa", translation: "house — CA-sa" }, { text: "hablan", translation: "they speak — HA-blan" }, { text: "hotel", translation: "hotel — ho-TEL" }, { text: "café", translation: "coffee — ca-FÉ" }, { text: "música", translation: "music — MÚ-si-ca" }] },
+  prediction: { eyebrow: "Use the ending", heading: "The word is casa.", context: "Casa ends in a vowel and has no written accent.", prompt: "Which syllable receives default stress?", options: [{ id: "ca", label: "CA-" }, { id: "sa", label: "-SA" }], correctOptionId: "ca", correctFeedback: "A vowel ending sends default stress to the next-to-last syllable: CA-sa.", incorrectFeedback: "Casa ends in a vowel, so count back to the next-to-last syllable: CA-sa." },
+  model: { eyebrow: "Two defaults and one override", heading: "Read the final character before searching for an accent.", paragraphs: ["First look for a written accent. If one is present, stress that marked vowel. If no accent is present, the ending chooses one of the two defaults.", "Vowel, n, or s endings normally stress the next-to-last syllable: casa, examen, hablan. Other consonant endings normally stress the last syllable: hotel, ciudad, profesor.", "These rules predict prominence, not syllable boundaries by themselves. Say the full word and let one syllable stand out without stretching every vowel around it."], points: [{ label: "VOWEL / N / S", title: "next-to-last", description: "CA-sa, EXA-men, HA-blan" }, { label: "OTHER CONSONANT", title: "last", description: "ho-TEL, ciu-DAD, profe-SOR" }, { label: "WRITTEN ACCENT", title: "marked vowel wins", description: "ca-FÉ, MÚ-si-ca, tam-BIÉN" }] },
+  contrast: { eyebrow: "The accent can carry meaning", heading: "Some tiny marks separate different words.", sides: [{ label: "WITHOUT ACCENT", question: "A statement word?", description: "Como can mean as/like or I eat, depending on context.", examples: [{ text: "Trabajo como profesor.", translation: "I work as a teacher." }] }, { label: "WITH ACCENT", question: "A question word?", description: "Cómo with an accent introduces how in direct and indirect questions.", examples: [{ text: "¿Cómo estás?", translation: "How are you?" }] }], note: "Do not remove accents because a keyboard makes them inconvenient. In Spanish, the written form carries information." },
+  guided: { eyebrow: "Let the accent lead", heading: "The word is música.", prompt: "Which syllable is stressed?", options: [{ id: "mu", label: "MÚ-" }, { id: "si", label: "-SI-" }, { id: "ca", label: "-CA" }], correctOptionId: "mu", correctFeedback: "The written accent on ú directly marks the stressed syllable: MÚ-si-ca.", incorrectFeedback: "A written accent overrides the default. Follow the mark on ú." },
+  sort: { eyebrow: "Apply the spelling system", heading: "Sort words by the instruction that determines stress.", prompt: "Place each word under its stress rule.", buckets: [{ id: "penultimate", label: "NEXT-TO-LAST", hint: "ends in vowel, n, or s" }, { id: "final", label: "LAST", hint: "ends in another consonant" }, { id: "accent", label: "WRITTEN ACCENT", hint: "marked vowel wins" }], items: [{ id: "casa", label: "casa", answer: "penultimate" }, { id: "hablan", label: "hablan", answer: "penultimate" }, { id: "hotel", label: "hotel", answer: "final" }, { id: "profesor", label: "profesor", answer: "final" }, { id: "cafe", label: "café", answer: "accent" }, { id: "musica", label: "música", answer: "accent" }] },
+  builder: { eyebrow: "Build the question", heading: "Preserve the meaningful accent.", prompt: "Build: How are you?", tokens: ["¿Cómo", "estás?"], correctOrder: ["¿Cómo", "estás?"], answer: "¿Cómo estás?", feedback: "Cómo carries the question accent, and estás preserves the written accent of the verb form." },
+  reading: { eyebrow: "Read the marks", heading: "Stress supports a natural exchange.", instructions: "Listen, then use the spelling to answer.", sentences: [{ id: "r1", text: "¿Cómo estás, José?", translation: "How are you, José?" }, { id: "r2", text: "Estoy bien, también.", translation: "I am well, too." }, { id: "r3", text: "Tomo café en el hotel.", translation: "I drink coffee in the hotel." }], questions: [{ id: "q1", prompt: "Which word uses its final consonant to predict last-syllable stress?", options: [{ id: "hotel", label: "hotel" }, { id: "como", label: "cómo" }], correctOptionId: "hotel", feedback: "Hotel ends in l and has no accent, so default stress falls on -tel.", conceptIds: ["stress_rules"] }, { id: "q2", prompt: "Which word has a written accent on its last vowel?", options: [{ id: "cafe", label: "café" }, { id: "tomo", label: "tomo" }], correctOptionId: "cafe", feedback: "The accent on é marks final stress in café.", conceptIds: ["accent_marks"] }] },
+  recall: { eyebrow: "Restore the mark", heading: "Type the correctly accented word.", prompt: "Complete each sentence with the spelling shown in English.", items: [{ id: "como", before: "¿", after: " estás? (How)", accepted: ["cómo"], answer: "Cómo", conceptIds: ["accent_marks"], feedback: "Question-word cómo requires the written accent." }, { id: "cafe", before: "Tomo ", after: ". (coffee)", accepted: ["café"], answer: "café", conceptIds: ["stress_rules", "accent_marks"], feedback: "Café needs the accent to mark final stress." }, { id: "musica", before: "La ", after: " es buena. (music)", accepted: ["música"], answer: "música", conceptIds: ["stress_rules", "accent_marks"], feedback: "Música marks stress on the first syllable." }] },
+  production: { eyebrow: "Write the marks", heading: "Use three accented words in context.", prompt: "Write three separate Spanish ideas using cómo, café, and música with their accent marks.", requirements: ["Use cómo", "Use café", "Use música", "Write three separate ideas"], example: "¿Cómo estás? Tomo café. La música es buena.", minimumCharacters: 38, evaluation: { minimumIdeas: 3, requiredGroups: [{ accepted: ["cómo"], missingFeedback: "Add cómo with its accent." }, { accepted: ["café"], missingFeedback: "Add café with its accent." }, { accepted: ["música"], missingFeedback: "Add música with its accent." }], successFeedback: "You preserved three accent marks that carry stress or grammatical information." } },
+  summary: { eyebrow: "Keep the algorithm", heading: "Accent first; ending second.", message: "Look for a written accent. If none appears, use the final letter to predict next-to-last or last-syllable stress.", ideas: [{ label: "VOWEL / N / S", question: "No accent?", uses: ["next-to-last", "casa"] }, { label: "OTHER CONSONANT", question: "No accent?", uses: ["last", "hotel"] }, { label: "ACCENT", question: "Where is the mark?", uses: ["marked vowel", "música"] }] },
+  completion: { title: "Spanish spelling now gives you sound instructions.", message: "Next, those sounds and marks become your first complete conversation." },
+});
+
+export const lesson05 = createFoundationLesson({
+  id: "0.5", moduleId: "module-00", title: "Your First Conversation", displayTitle: "Enter a conversation before you know every rule.",
+  dek: "A small set of complete chunks lets you greet someone, exchange names, and ask how they are.",
+  goal: "Carry out a short greeting with hola, me llamo, ¿cómo te llamas?, mucho gusto, and ¿cómo estás?", durationMinutes: 22, concepts: ["greeting_chunks", "spanish_vowels", "stress_rules"],
+  opening: { eyebrow: "Meaningful from the start", heading: "A complete phrase can be useful before every piece is explained.", paragraphs: ["Grammar study will soon show you how Spanish sentences are built. But conversation also relies on high-frequency chunks that speakers retrieve as a whole.", "Me llamo introduces your name. ¿Cómo te llamas? asks for the other person’s name. Mucho gusto responds to the introduction, and ¿Cómo estás? moves from identity to the person’s current state.", "Learn the exchange as a sequence of social moves. The wording matters, but so does knowing why each line appears next."], spanish: [{ text: "Hola. Me llamo Ana.", translation: "Hello. My name is Ana." }, { text: "¿Cómo te llamas?", translation: "What is your name?" }, { text: "Mucho gusto.", translation: "Nice to meet you." }, { text: "¿Cómo estás?", translation: "How are you?" }, { text: "Estoy bien, gracias.", translation: "I am well, thank you." }] },
+  prediction: { eyebrow: "Choose the social move", heading: "Someone says: Me llamo Sofía.", context: "The person has just introduced herself.", prompt: "Which response fits the moment?", options: [{ id: "gusto", label: "Mucho gusto." }, { id: "name", label: "Me llamo…" }, { id: "where", label: "¿Dónde?" }], correctOptionId: "gusto", correctFeedback: "Mucho gusto acknowledges the introduction: nice to meet you.", incorrectFeedback: "Respond to the introduction itself. Mucho gusto is the conventional next move." },
+  model: { eyebrow: "The five-turn frame", heading: "Conversation becomes manageable when each line has a job.", paragraphs: ["Hola opens the interaction. Me llamo + name offers identity. ¿Cómo te llamas? returns the invitation and asks for the other person’s name.", "Mucho gusto recognizes the meeting. ¿Cómo estás? asks about the person’s state; Estoy bien, gracias gives a simple answer and closes the exchange politely.", "The opening question mark and accent in cómo are part of the written question. When speaking, the full phrase—not English word order—should guide you."], points: [{ label: "OPEN", title: "Hola", description: "Make contact." }, { label: "IDENTIFY", title: "Me llamo…", description: "Offer your name." }, { label: "ASK", title: "¿Cómo te llamas?", description: "Invite the other name." }, { label: "ACKNOWLEDGE", title: "Mucho gusto", description: "Recognize the introduction." }, { label: "CONNECT", title: "¿Cómo estás?", description: "Ask how the person is." }] },
+  contrast: { eyebrow: "Two questions with cómo", heading: "The rest of the phrase decides what you are asking.", sides: [{ label: "NAME", question: "¿Cómo te llamas?", description: "The phrase asks what the other person is called.", examples: [{ text: "Me llamo Diego.", translation: "My name is Diego." }] }, { label: "STATE", question: "¿Cómo estás?", description: "The phrase asks how the other person is.", examples: [{ text: "Estoy bien, gracias.", translation: "I am well, thank you." }] }], note: "Do not translate cómo one word at a time and invent English order. Retrieve each complete question for its conversational job." },
+  guided: { eyebrow: "Follow the exchange", heading: "Ana asks: ¿Cómo te llamas?", prompt: "Which answer provides the requested information?", options: [{ id: "llamo", label: "Me llamo Luis." }, { id: "bien", label: "Estoy bien." }, { id: "gusto", label: "Mucho gusto." }], correctOptionId: "llamo", correctFeedback: "The question asks for a name, so Me llamo Luis answers directly.", incorrectFeedback: "Match the reply to the job of the question: ¿Cómo te llamas? requests a name." },
+  sort: { eyebrow: "Organize the moves", heading: "Match each phrase to its conversational purpose.", prompt: "Place each chunk under the job it performs.", buckets: [{ id: "open", label: "OPEN", hint: "make contact" }, { id: "name", label: "EXCHANGE NAMES", hint: "offer or ask" }, { id: "respond", label: "RESPOND", hint: "acknowledge or answer" }], items: [{ id: "hola", label: "Hola.", answer: "open" }, { id: "me-llamo", label: "Me llamo Ana.", answer: "name" }, { id: "como-llamas", label: "¿Cómo te llamas?", answer: "name" }, { id: "gusto", label: "Mucho gusto.", answer: "respond" }, { id: "bien", label: "Estoy bien, gracias.", answer: "respond" }] },
+  builder: { eyebrow: "Build the question", heading: "Ask for the other person’s name.", prompt: "Build the complete question.", tokens: ["¿Cómo", "te", "llamas?"], correctOrder: ["¿Cómo", "te", "llamas?"], answer: "¿Cómo te llamas?", feedback: "The whole chunk asks for a name; cómo keeps its question accent." },
+  reading: { eyebrow: "A first exchange", heading: "Two people meet without translating every word.", instructions: "Listen to the conversation, then follow the social sequence.", sentences: [{ id: "r1", text: "—Hola. Me llamo Elena. ¿Cómo te llamas?", translation: "—Hello. My name is Elena. What is your name?" }, { id: "r2", text: "—Me llamo Mateo. Mucho gusto.", translation: "—My name is Mateo. Nice to meet you." }, { id: "r3", text: "—Mucho gusto. ¿Cómo estás?", translation: "—Nice to meet you. How are you?" }, { id: "r4", text: "—Estoy bien, gracias.", translation: "—I am well, thank you." }], questions: [{ id: "q1", prompt: "Who asks for the first name?", options: [{ id: "elena", label: "Elena" }, { id: "mateo", label: "Mateo" }], correctOptionId: "elena", feedback: "Elena says ¿Cómo te llamas?, so she requests Mateo’s name.", conceptIds: ["greeting_chunks"] }, { id: "q2", prompt: "Which line answers a question about state?", options: [{ id: "bien", label: "Estoy bien, gracias." }, { id: "gusto", label: "Mucho gusto." }], correctOptionId: "bien", feedback: "Estoy bien answers ¿Cómo estás?", conceptIds: ["greeting_chunks"] }] },
+  recall: { eyebrow: "Retrieve the chunks", heading: "Complete the exchange without choices.", prompt: "Type the missing conversational phrase.", items: [{ id: "name", before: "", after: " Ana. (My name is)", accepted: ["me llamo"], answer: "Me llamo", conceptIds: ["greeting_chunks"], feedback: "Me llamo + name offers your identity." }, { id: "gusto", before: "Mucho ", after: ". (Nice to meet you)", accepted: ["gusto"], answer: "gusto", conceptIds: ["greeting_chunks"], feedback: "Mucho gusto acknowledges the introduction." }, { id: "state", before: "¿Cómo ", after: "? (How are you?)", accepted: ["estás", "estas"], answer: "estás", conceptIds: ["greeting_chunks", "accent_marks"], feedback: "¿Cómo estás? asks about the other person’s state." }] },
+  production: { eyebrow: "Your first conversation", heading: "Write both sides of a short meeting.", prompt: "Write at least four separate lines. Introduce yourself, ask a name, respond to the introduction, and ask or answer how someone is.", requirements: ["Use me llamo", "Use ¿Cómo te llamas?", "Use mucho gusto", "Use estás or estoy"], example: "Hola. Me llamo Ana. ¿Cómo te llamas? Me llamo Luis. Mucho gusto. Estoy bien, gracias.", minimumCharacters: 70, evaluation: { minimumIdeas: 4, requiredGroups: [{ accepted: ["me llamo"], missingFeedback: "Introduce a name with me llamo." }, { accepted: ["cómo te llamas", "como te llamas"], missingFeedback: "Ask for a name with ¿Cómo te llamas?" }, { accepted: ["mucho gusto"], missingFeedback: "Acknowledge the introduction with mucho gusto." }, { accepted: ["estoy", "estás", "estas"], missingFeedback: "Ask or answer how someone is with estás or estoy." }], successFeedback: "You built a complete social exchange from greeting through name and state." } },
+  summary: { eyebrow: "Keep the exchange", heading: "A conversation is a sequence of purposes.", message: "Retrieve the line that fits the social move instead of translating one isolated English word at a time.", ideas: [{ label: "OPEN", question: "How do I make contact and identify myself?", uses: ["hola", "me llamo"] }, { label: "INVITE", question: "How do I ask for the other name?", uses: ["¿cómo te llamas?"] }, { label: "CONNECT", question: "How do I acknowledge and ask about state?", uses: ["mucho gusto", "¿cómo estás?"] }] },
+  completion: { title: "You completed a first Spanish conversation.", message: "Module 1 now begins the system underneath the phrases: nouns, gender, and articles." },
+});
+
+export const startHereLessons = [lesson01, lesson02, lesson03, lesson04, lesson05];
