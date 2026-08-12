@@ -106,7 +106,7 @@ const conceptLabels: Partial<Record<ConceptId, string>> = {
   past_narration: "Building a complete meaningful story",
 };
 
-export function Dashboard() {
+export function Dashboard({ entitled }: { entitled: boolean }) {
   const state = usePrototypeState();
   const reviewCount = state.reviewQueue.length;
   const checkpointMilestones = [
@@ -145,7 +145,7 @@ export function Dashboard() {
     ? `Bring the stage together through comprehension, recall, construction, and original Spanish before continuing.`
     : nextLesson ? `Lesson ${nextLesson.id} begins the next step in ${currentModule.title.toLocaleLowerCase()}.`
       : "Every lesson and checkpoint is complete. Revisit any module or practice its recall set from Review.";
-  const learningHref = nextCheckpoint?.href ?? (nextLesson ? `/lesson/${nextLesson.id}` : "/course");
+  const learningHref = !entitled && nextLessonModule && nextLessonModule.number > 0 ? "/plans" : nextCheckpoint?.href ?? (nextLesson ? `/lesson/${nextLesson.id}` : "/course");
   const reviewIsPrimary = reviewCount > 0;
   const moduleLabel = currentModule.number === 0 ? "Start Here" : `Module ${String(currentModule.number).padStart(2, "0")}`;
   const visibleConcepts = currentModule.concepts.slice(0, 3);
@@ -170,14 +170,17 @@ export function Dashboard() {
       <section className="dashboard-priority" aria-labelledby="dashboard-priority-title">
         <div className="dashboard-priority__main">
           <p className="eyebrow">Next action</p>
-          <h2 id="dashboard-priority-title">{reviewIsPrimary ? "Bring back what you know." : learningTitle}</h2>
-          <p>{reviewIsPrimary ? `${reviewCount} ideas are due. Choose their module in Review, then retrieve them without the lesson open.` : learningDescription}</p>
-          <Link className="button button--dark" href={reviewIsPrimary ? "/review" : learningHref}>
-            {reviewIsPrimary ? "Choose a review module" : nextCheckpoint ? "Begin checkpoint" : nextLesson ? "Start lesson" : "View course"}
+          <h2 id="dashboard-priority-title">{!entitled && nextLessonModule && nextLessonModule.number > 0 ? "Continue with Spanish Foundations." : reviewIsPrimary ? "Bring back what you know." : learningTitle}</h2>
+          <p>{!entitled && nextLessonModule && nextLessonModule.number > 0 ? "You finished the free introduction. One lifetime purchase opens the complete four-stage course." : reviewIsPrimary ? `${reviewCount} ideas are due. Choose their module in Review, then retrieve them without the lesson open.` : learningDescription}</p>
+          <Link className="button button--dark" href={!entitled && nextLessonModule && nextLessonModule.number > 0 ? "/plans" : reviewIsPrimary ? "/review" : learningHref}>
+            {!entitled && nextLessonModule && nextLessonModule.number > 0 ? "See course access" : reviewIsPrimary ? "Choose a review module" : nextCheckpoint ? "Begin checkpoint" : nextLesson ? "Start lesson" : "View course"}
             <ArrowRight aria-hidden="true" />
           </Link>
         </div>
 
+      </section>
+
+      <section className="dashboard-current" aria-label="Current module">
         <aside className="dashboard-course-progress" aria-label="Current course progress">
           <div className="dashboard-course-progress__topline"><span>Current module</span><strong>{moduleLessonsComplete} / {currentModule.lessons.length}</strong></div>
           <p>{moduleLabel}</p>
@@ -185,6 +188,7 @@ export function Dashboard() {
           <div className="dashboard-progress" aria-label={`${moduleComplete} percent of ${moduleLabel} complete`}><span style={{ width: `${moduleComplete}%` }} /></div>
           <div className="dashboard-course-progress__footer"><span>{moduleComplete}% complete</span><Link href={`/module/${currentModule.number}`}>View module <ArrowRight aria-hidden="true" /></Link></div>
         </aside>
+        <div className="dashboard-current__context"><p className="eyebrow">Why this comes next</p><p>{currentModule.objective}</p><Link href={`/module/${currentModule.number}`}>Open the module overview <ArrowRight aria-hidden="true" /></Link></div>
       </section>
 
       <section className="dashboard-tools" aria-label="Practice and course tools">

@@ -4,14 +4,6 @@ import { updateSession } from "@/lib/supabase/proxy";
 
 function requiresAccount(pathname: string) {
   if (["/dashboard", "/review", "/settings"].some((path) => pathname === path || pathname.startsWith(`${path}/`))) return true;
-  if (pathname.startsWith("/checkpoint/")) return true;
-
-  const moduleMatch = pathname.match(/^\/module\/(\d+)(?:\/|$)/);
-  if (moduleMatch) return Number(moduleMatch[1]) > 0;
-
-  const lessonMatch = pathname.match(/^\/lesson\/([^/]+)(?:\/|$)/);
-  if (lessonMatch) return !lessonMatch[1].startsWith("0.");
-
   return false;
 }
 

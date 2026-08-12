@@ -468,8 +468,8 @@ export function LessonExperience({ lesson }: { lesson: LessonDefinition }) {
     });
   };
 
-  const finish = () => {
-    completeLesson(lesson.id);
+  const finish = async () => {
+    await completeLesson(lesson.id);
     playCompletionSound();
     setFinished(true);
   };

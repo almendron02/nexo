@@ -1,8 +1,7 @@
 import { CourseIndex } from "@/components/CourseIndex";
-import { createClient } from "@/lib/supabase/server";
+import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export default async function CoursePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  return <CourseIndex authenticated={Boolean(user)} />;
+  const learner = await getLearnerSnapshot();
+  return <CourseIndex authenticated={Boolean(learner.user)} entitled={learner.entitled} />;
 }

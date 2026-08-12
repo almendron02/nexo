@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LibraryEntryPage } from "@/components/LibraryEntryPage";
 import { getLibraryEntry, libraryEntries } from "@/content/library";
+import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export function generateStaticParams() {
   return libraryEntries.map((entry) => ({ slug: entry.slug }));
@@ -21,5 +22,6 @@ export default async function LibraryGuidePage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const entry = getLibraryEntry(slug);
   if (!entry) notFound();
-  return <LibraryEntryPage entry={entry} />;
+  const learner = await getLearnerSnapshot();
+  return <LibraryEntryPage authenticated={Boolean(learner.user)} entitled={learner.entitled} entry={entry} />;
 }

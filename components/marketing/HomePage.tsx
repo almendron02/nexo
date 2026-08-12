@@ -45,6 +45,7 @@ export function HomePage() {
             <Link href="/dashboard">Nexo</Link>
             <Link href="/library">Library</Link>
             <Link href="/course">Course</Link>
+            <Link href="/plans">Plans</Link>
             <a href="#accreditation">About</a>
           </div>
           <Link className="home-nav__cta" href="/auth/sign-in?next=/dashboard">
@@ -66,7 +67,7 @@ export function HomePage() {
               Learn Spanish in the right order, understand how it works, and practice until you can use it yourself.
             </p>
             <div className="home-hero__actions">
-              <Link className="home-button home-button--primary" href="/lesson/0.1">
+              <Link className="home-button home-button--primary" href="/start">
                 Start free <ArrowRight aria-hidden="true" />
               </Link>
               <Link className="home-button home-button--quiet" href="/course">
@@ -180,7 +181,7 @@ export function HomePage() {
           <h2>The goal is not to keep you in an app.</h2>
           <p>The goal is to help you use Spanish without it.</p>
           <div className="home-hero__actions">
-            <Link className="home-button home-button--primary" href="/lesson/0.1">
+            <Link className="home-button home-button--primary" href="/start">
               Start Module 0 free <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="home-button home-button--quiet" href="/course">

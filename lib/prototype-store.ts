@@ -1,7 +1,9 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { createClient } from "@/lib/supabase/client";
 import type { ConceptId } from "@/content/schemas";
+import type { ConceptEvidence } from "@/lib/prototype-state";
 import {
   createRecordId,
   defaultPrototypeState,
@@ -19,6 +21,7 @@ type RecordAttemptInput = {
 };
 
 let cache: PrototypeState | null = null;
+let authenticatedUserId: string | null = null;
 const listeners = new Set<() => void>();
 
 function readStoredState(): PrototypeState {
@@ -58,19 +61,62 @@ export function usePrototypeState() {
   return useSyncExternalStore(subscribe, readStoredState, () => defaultPrototypeState);
 }
 
+export function hydratePrototypeState(next: PrototypeState, userId: string) {
+  authenticatedUserId = userId;
+  writeState(next);
+}
+
+export function clearAuthenticatedPrototypeState() {
+  authenticatedUserId = null;
+  cache = null;
+  listeners.forEach((listener) => listener());
+}
+
+async function persistAttempt(input: RecordAttemptInput, attemptNumber: number, createdAt: string, attemptId: string, evidence: ConceptEvidence[]) {
+  if (!authenticatedUserId) return;
+  const supabase = createClient();
+  await Promise.all([
+    supabase.from("learner_attempts").insert({
+      user_id: authenticatedUserId,
+      id: attemptId,
+      interaction_id: input.interactionId,
+      answer: input.answer,
+      correct: input.correct,
+      kind: input.kind,
+      concept_ids: input.conceptIds,
+      attempt_number: attemptNumber,
+      created_at: createdAt,
+    }),
+    supabase.from("concept_evidence").insert(evidence.map((item) => ({
+      user_id: authenticatedUserId,
+      id: item.id,
+      concept_id: item.conceptId,
+      interaction_id: item.interactionId,
+      correct: item.correct,
+      independent: item.independent,
+      created_at: item.createdAt,
+    }))),
+  ]);
+}
+
 export function recordAttempt(input: RecordAttemptInput) {
   const state = readStoredState();
   const attemptNumber = state.attempts.filter(
     (attempt) => attempt.interactionId === input.interactionId,
   ).length + 1;
   const createdAt = new Date().toISOString();
+  const attemptId = createRecordId("attempt");
+  const evidence: ConceptEvidence[] = input.conceptIds.map((conceptId) => ({
+    id: createRecordId("evidence"), conceptId, interactionId: input.interactionId,
+    correct: input.correct, independent: input.independent ?? false, createdAt,
+  }));
 
   writeState({
     ...state,
     attempts: [
       ...state.attempts,
       {
-        id: createRecordId("attempt"),
+        id: attemptId,
         interactionId: input.interactionId,
         answer: input.answer,
         correct: input.correct,
@@ -82,19 +128,13 @@ export function recordAttempt(input: RecordAttemptInput) {
     ],
     evidence: [
       ...state.evidence,
-      ...input.conceptIds.map((conceptId) => ({
-        id: createRecordId("evidence"),
-        conceptId,
-        interactionId: input.interactionId,
-        correct: input.correct,
-        independent: input.independent ?? false,
-        createdAt,
-      })),
+      ...evidence,
     ],
   });
+  void persistAttempt(input, attemptNumber, createdAt, attemptId, evidence);
 }
 
-export function completeLesson(lessonId: string) {
+export async function completeLesson(lessonId: string) {
   const state = readStoredState();
   if (state.completedLessons.includes(lessonId)) return;
   writeState({
@@ -102,6 +142,13 @@ export function completeLesson(lessonId: string) {
     completedLessons: [...state.completedLessons, lessonId],
     lastVisitedLesson: lessonId,
   });
+  if (authenticatedUserId) {
+    const supabase = createClient();
+    await Promise.all([
+      supabase.from("lesson_progress").insert({ user_id: authenticatedUserId, lesson_id: lessonId }),
+      supabase.from("learner_profiles").upsert({ user_id: authenticatedUserId, last_visited_lesson: lessonId, updated_at: new Date().toISOString() }),
+    ]);
+  }
 }
 
 export function resolveReviewItem(itemId: string) {

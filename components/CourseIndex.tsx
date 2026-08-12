@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Check, Clock3, LockKeyhole } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Clock3, LockKeyhole } from "lucide-react";
 import { courseModules, courseStages } from "@/content/course-catalog";
 import { usePrototypeState } from "@/lib/prototype-store";
+import { lessonAccessFor } from "@/lib/course-access";
 
-export function CourseIndex({ authenticated }: { authenticated: boolean }) {
+export function CourseIndex({ authenticated, entitled }: { authenticated: boolean; entitled: boolean }) {
   const state = usePrototypeState();
   const builtLessons = courseModules.filter((module) => module.available).flatMap((module) => module.lessons);
   const totalLessons = courseModules.reduce((total, module) => total + module.lessons.length, 0);
@@ -27,7 +28,7 @@ export function CourseIndex({ authenticated }: { authenticated: boolean }) {
           <span><strong>{totalLessons}</strong> exact classes</span>
           <span><strong>{completed}/{builtLessons.length}</strong> available classes complete</span>
         </div>
-        <p className="course-access-note"><strong>Start free.</strong> Module 0 needs no account. Create one when you are ready for Module 1 and the complete path.</p>
+        <p className="course-access-note"><strong>Start free.</strong> Module 0 needs no account. Create a free account afterward, then choose lifetime course access when you are ready for Module 1.</p>
       </header>
 
       <nav className="course-stage-nav" aria-label="Course stages">
@@ -53,37 +54,41 @@ export function CourseIndex({ authenticated }: { authenticated: boolean }) {
                 {modules.map((module) => {
                   const completeCount = module.lessons.filter((lesson) => state.completedLessons.includes(lesson.id)).length;
                   const moduleLabel = module.number === 0 ? "Start" : String(module.number).padStart(2, "0");
-                  const accountRequired = module.number > 0 && !authenticated;
+                  const moduleCompleted = completeCount === module.lessons.length;
                   return (
-                    <article className="course-module-row" key={module.number}>
-                      <Link className="course-module-row__heading" href={`/module/${module.number}`}>
+                    <details className="course-module-row" key={module.number}>
+                      <summary className="course-module-row__heading">
                         <span>{moduleLabel}</span>
                         <div>
                           <p>
                             {module.number === 0 ? "Orientation · Free — no account needed" : `Module ${module.number}`}
-                            {module.number > 0 ? accountRequired ? " · Account required" : " · Available" : ""}
+                            {module.number > 0 ? !authenticated ? " · Account required" : !entitled ? " · Course access" : moduleCompleted ? " · Complete" : " · In your path" : ""}
                           </p>
                           <h3>{module.title}</h3>
                           <small>{module.description}</small>
                         </div>
-                        {accountRequired ? <LockKeyhole aria-hidden="true" /> : <ArrowRight aria-hidden="true" />}
-                      </Link>
-                      <ol className="course-class-list">
+                        <ChevronDown aria-hidden="true" />
+                      </summary>
+                      <div className="course-module-row__body">
+                        <Link className="course-module-row__open" href={`/module/${module.number}`}>View module overview <ArrowRight aria-hidden="true" /></Link>
+                        <ol className="course-class-list">
                         {module.lessons.map((lesson) => {
                           const done = state.completedLessons.includes(lesson.id);
                           const href = module.available ? `/lesson/${lesson.id}` : `/module/${module.number}#lesson-${lesson.id}`;
+                          const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, entitled, lessonId: lesson.id });
+                          const accessLabel = access.status === "available" ? lesson.durationMinutes ? `${lesson.durationMinutes} min` : "Open" : access.status === "account-required" ? "Account" : access.status === "purchase-required" ? "Course access" : access.status === "checkpoint-required" ? access.checkpointTitle : `Complete ${access.prerequisiteId}`;
                           return (
                             <li className={done ? "is-complete" : ""} key={lesson.id}>
                               <Link href={href}>
                                 <span>{done ? <Check aria-hidden="true" /> : lesson.id}</span>
                                 <strong>{lesson.title}</strong>
-                                {accountRequired ? <small><LockKeyhole aria-hidden="true" /> Account</small> : lesson.durationMinutes ? <small><Clock3 aria-hidden="true" /> {lesson.durationMinutes} min</small> : <small>Planned</small>}
+                                <small>{access.status === "available" ? <Clock3 aria-hidden="true" /> : <LockKeyhole aria-hidden="true" />}{accessLabel}</small>
                               </Link>
                             </li>
                           );
                         })}
                       </ol>
-                      {module.available ? <p className="course-module-row__progress">{completeCount} of {module.lessons.length} classes complete</p> : null}
+                        {module.available ? <p className="course-module-row__progress">{completeCount} of {module.lessons.length} classes complete</p> : null}
                       {module.checkpointAfter ? (
                         <Link
                           className="course-checkpoint-link"
@@ -93,8 +98,9 @@ export function CourseIndex({ authenticated }: { authenticated: boolean }) {
                         >
                           {module.checkpointAfter}<ArrowRight aria-hidden="true" />
                         </Link>
-                      ) : null}
-                    </article>
+                        ) : null}
+                      </div>
+                    </details>
                   );
                 })}
               </div>

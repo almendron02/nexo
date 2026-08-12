@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { CourseModuleOverview } from "@/components/CourseModuleOverview";
 import { courseModules, getCourseModule } from "@/content/course-catalog";
+import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export const dynamicParams = false;
 
@@ -13,5 +14,6 @@ export default async function CourseModulePage({ params }: { params: Promise<{ m
   const number = Number(moduleNumber);
   const courseModule = Number.isInteger(number) ? getCourseModule(number) : undefined;
   if (!courseModule || number === 4) notFound();
-  return <CourseModuleOverview module={courseModule} />;
+  const learner = await getLearnerSnapshot();
+  return <CourseModuleOverview authenticated={Boolean(learner.user)} entitled={learner.entitled} module={courseModule} />;
 }

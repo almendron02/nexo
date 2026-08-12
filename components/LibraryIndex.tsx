@@ -46,9 +46,9 @@ export function LibraryIndex() {
       <section className="library-search-section library-search-section--lead" aria-labelledby="library-search-heading">
         <div className="library-search-heading">
           <div>
-            <p className="eyebrow">Library · Complete course</p>
+            <p className="eyebrow">Free Spanish reference</p>
             <h1 id="library-search-heading">Find an answer.</h1>
-            <p>Search the forms, patterns, and meaning contrasts taught from Start Here through Module 16.</p>
+            <p>The Library is open to everyone. Search one specific form, pattern, or meaning contrast without enrolling in the course.</p>
           </div>
           <span>{libraryEntries.length} guides available</span>
         </div>
@@ -118,8 +118,8 @@ export function LibraryIndex() {
       </section>
 
       <footer className="library-roadmap">
-        <span>Course reference</span>
-        <p>Every course stage now has a guide here. Source-lesson links take you back to the full explanation and practice whenever a quick answer is not enough.</p>
+        <span>Free and open</span>
+        <p>Every guide is available without an account. Source-lesson links show whether the full class is free, included with your course, or waiting on an earlier lesson.</p>
       </footer>
     </div>
   );

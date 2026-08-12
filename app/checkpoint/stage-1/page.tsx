@@ -1,6 +1,6 @@
-import { LessonExperience } from "@/components/LessonExperience";
+import { ProtectedCheckpoint } from "@/components/ProtectedCheckpoint";
 import { stage01Checkpoint } from "@/content/spanish-foundations/module-04";
 
 export default function StageOneCheckpointPage() {
-  return <LessonExperience lesson={stage01Checkpoint} />;
+  return <ProtectedCheckpoint lesson={stage01Checkpoint} stage={1} />;
 }

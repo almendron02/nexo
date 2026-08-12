@@ -1,6 +1,6 @@
-import { LessonExperience } from "@/components/LessonExperience";
 import { lesson43 } from "@/content/spanish-foundations/module-04";
+import { ProtectedLesson } from "@/components/ProtectedLesson";
 
 export default function Lesson43Page() {
-  return <LessonExperience lesson={lesson43} />;
+  return <ProtectedLesson lesson={lesson43} />;
 }
