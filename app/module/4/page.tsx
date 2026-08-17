@@ -3,5 +3,5 @@ import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export default async function ModuleFourPage() {
   const learner = await getLearnerSnapshot();
-  return <ModuleOverview authenticated={Boolean(learner.user)} entitled={learner.entitled} />;
+  return <ModuleOverview authenticated={Boolean(learner.user)} />;
 }

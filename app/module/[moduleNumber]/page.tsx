@@ -15,5 +15,5 @@ export default async function CourseModulePage({ params }: { params: Promise<{ m
   const courseModule = Number.isInteger(number) ? getCourseModule(number) : undefined;
   if (!courseModule || number === 4) notFound();
   const learner = await getLearnerSnapshot();
-  return <CourseModuleOverview authenticated={Boolean(learner.user)} entitled={learner.entitled} module={courseModule} />;
+  return <CourseModuleOverview authenticated={Boolean(learner.user)} module={courseModule} />;
 }

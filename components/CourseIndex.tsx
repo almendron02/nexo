@@ -6,7 +6,7 @@ import { courseModules, courseStages } from "@/content/course-catalog";
 import { usePrototypeState } from "@/lib/prototype-store";
 import { lessonAccessFor } from "@/lib/course-access";
 
-export function CourseIndex({ authenticated, entitled }: { authenticated: boolean; entitled: boolean }) {
+export function CourseIndex({ authenticated }: { authenticated: boolean }) {
   const state = usePrototypeState();
   const builtLessons = courseModules.filter((module) => module.available).flatMap((module) => module.lessons);
   const totalLessons = courseModules.reduce((total, module) => total + module.lessons.length, 0);
@@ -28,7 +28,7 @@ export function CourseIndex({ authenticated, entitled }: { authenticated: boolea
           <span><strong>{totalLessons}</strong> exact classes</span>
           <span><strong>{completed}/{builtLessons.length}</strong> available classes complete</span>
         </div>
-        <p className="course-access-note"><strong>Start free.</strong> Module 0 needs no account. Create a free account afterward, then choose lifetime course access when you are ready for Module 1.</p>
+        <p className="course-access-note"><strong>The complete course is free.</strong> Start Here needs no account. Create a free account afterward so Nexo can preserve your path, attempts, and review history from Module 1 through the finish.</p>
       </header>
 
       <nav className="course-stage-nav" aria-label="Course stages">
@@ -62,7 +62,7 @@ export function CourseIndex({ authenticated, entitled }: { authenticated: boolea
                         <div>
                           <p>
                             {module.number === 0 ? "Orientation · Free — no account needed" : `Module ${module.number}`}
-                            {module.number > 0 ? !authenticated ? " · Account required" : !entitled ? " · Course access" : moduleCompleted ? " · Complete" : " · In your path" : ""}
+                            {module.number > 0 ? !authenticated ? " · Free account required" : moduleCompleted ? " · Complete" : " · In your path" : ""}
                           </p>
                           <h3>{module.title}</h3>
                           <small>{module.description}</small>
@@ -75,8 +75,8 @@ export function CourseIndex({ authenticated, entitled }: { authenticated: boolea
                         {module.lessons.map((lesson) => {
                           const done = state.completedLessons.includes(lesson.id);
                           const href = module.available ? `/lesson/${lesson.id}` : `/module/${module.number}#lesson-${lesson.id}`;
-                          const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, entitled, lessonId: lesson.id });
-                          const accessLabel = access.status === "available" ? lesson.durationMinutes ? `${lesson.durationMinutes} min` : "Open" : access.status === "account-required" ? "Account" : access.status === "purchase-required" ? "Course access" : access.status === "checkpoint-required" ? access.checkpointTitle : `Complete ${access.prerequisiteId}`;
+                          const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, lessonId: lesson.id });
+                          const accessLabel = access.status === "available" ? lesson.durationMinutes ? `${lesson.durationMinutes} min` : "Open" : access.status === "account-required" ? "Free account" : access.status === "checkpoint-required" ? access.checkpointTitle : `Complete ${access.prerequisiteId}`;
                           return (
                             <li className={done ? "is-complete" : ""} key={lesson.id}>
                               <Link href={href}>

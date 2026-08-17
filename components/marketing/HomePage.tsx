@@ -45,7 +45,7 @@ export function HomePage() {
             <Link href="/dashboard">Nexo</Link>
             <Link href="/library">Library</Link>
             <Link href="/course">Course</Link>
-            <Link href="/plans">Plans</Link>
+            <Link href="/open-source">Open source</Link>
             <a href="#accreditation">About</a>
           </div>
           <Link className="home-nav__cta" href="/auth/sign-in?next=/dashboard">
@@ -68,7 +68,7 @@ export function HomePage() {
             </p>
             <div className="home-hero__actions">
               <Link className="home-button home-button--primary" href="/start">
-                Start free <ArrowRight aria-hidden="true" />
+                Start learning <ArrowRight aria-hidden="true" />
               </Link>
               <Link className="home-button home-button--quiet" href="/course">
                 See the complete course
@@ -176,13 +176,40 @@ export function HomePage() {
           </div>
         </section>
 
+        <section className="home-section home-for-you" aria-labelledby="home-open-source-title">
+          <div className="home-section__intro">
+            <p className="home-kicker">Free and open source</p>
+            <h2 id="home-open-source-title">A shared grammar source, built to outlast a paywall.</h2>
+          </div>
+          <div className="home-audiences">
+            <div>
+              <span>01</span>
+              <h3>The complete course is free.</h3>
+              <p>Every lesson, checkpoint, review set, and future course improvement is available without a purchase.</p>
+            </div>
+            <div>
+              <span>02</span>
+              <h3>Your account serves the learning.</h3>
+              <p>It preserves your place, first attempts, mastery evidence, and review history across the full course.</p>
+            </div>
+            <div>
+              <span>03</span>
+              <h3>The source is open.</h3>
+              <p>Inspect the application, improve explanations, and help make one rigorous Spanish grammar path useful to more people.</p>
+            </div>
+          </div>
+          <div className="home-hero__actions">
+            <Link className="home-button home-button--quiet" href="/open-source">Read the open-source promise</Link>
+          </div>
+        </section>
+
         <section className="home-final">
           <p className="home-kicker">Spanish, understood.</p>
           <h2>The goal is not to keep you in an app.</h2>
           <p>The goal is to help you use Spanish without it.</p>
           <div className="home-hero__actions">
             <Link className="home-button home-button--primary" href="/start">
-              Start Module 0 free <ArrowRight aria-hidden="true" />
+              Start Module 0 <ArrowRight aria-hidden="true" />
             </Link>
             <Link className="home-button home-button--quiet" href="/course">
               Explore the prototype

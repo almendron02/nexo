@@ -3769,22 +3769,17 @@ svg {
 .review-module-row > button:disabled { cursor: not-allowed; opacity: 0.52; }
 .review-module-row > button:disabled:hover .review-module-row__action { color: inherit; }
 
-/* Course access and payment */
+/* Account access and open-source promise */
 
-.access-page,
-.purchase-success {
+.access-page {
   margin: 0 auto;
   max-width: 850px;
   padding: 110px 56px 120px;
 }
-.access-page__mark,
-.purchase-success > div:first-child { align-items: center; border: 1px solid var(--line-strong); border-radius: 50%; display: flex; height: 48px; justify-content: center; margin-bottom: 48px; width: 48px; }
-.access-page__mark svg,
-.purchase-success > div:first-child svg { height: 20px; width: 20px; }
-.access-page h1,
-.purchase-success h1 { font-size: clamp(52px, 8vw, 86px); letter-spacing: -0.07em; line-height: 0.94; margin: 0; }
-.access-page > p:not(.eyebrow),
-.purchase-success > p:not(.eyebrow) { color: var(--ink-soft); font-size: 17px; line-height: 1.7; margin: 30px 0; max-width: 680px; }
+.access-page__mark { align-items: center; border: 1px solid var(--line-strong); border-radius: 50%; display: flex; height: 48px; justify-content: center; margin-bottom: 48px; width: 48px; }
+.access-page__mark svg { height: 20px; width: 20px; }
+.access-page h1 { font-size: clamp(52px, 8vw, 86px); letter-spacing: -0.07em; line-height: 0.94; margin: 0; }
+.access-page > p:not(.eyebrow) { color: var(--ink-soft); font-size: 17px; line-height: 1.7; margin: 30px 0; max-width: 680px; }
 .access-page__lesson { border-bottom: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong); display: grid; gap: 8px; margin: 46px 0; padding: 22px 0; }
 .access-page__lesson span { color: var(--ink-faint); font-size: 12px; text-transform: uppercase; }
 .access-page__lesson strong { font-size: 18px; }
@@ -3796,19 +3791,12 @@ svg {
 .plans-hero { border-bottom: 1px solid var(--line-strong); padding-bottom: 70px; }
 .plans-hero h1 { font-size: clamp(58px, 8vw, 104px); letter-spacing: -0.078em; line-height: 0.9; margin: 0; max-width: 1000px; }
 .plans-hero > p:not(.eyebrow) { color: var(--ink-soft); font-size: 19px; line-height: 1.65; margin: 32px 0 0; max-width: 680px; }
-.plans-message { background: var(--accent-blue-soft); border-left: 3px solid var(--accent-blue); font-size: 14px; margin: 34px 0 0; padding: 16px 18px; }
 .plans-choice { border-bottom: 1px solid var(--line-strong); display: grid; grid-template-columns: 0.8fr 1.2fr; }
 .plans-choice > div { min-height: 480px; padding: 70px 60px 70px 0; }
 .plans-choice__course { border-left: 1px solid var(--line-strong); padding-left: 70px !important; }
 .plans-choice h2 { font-size: clamp(38px, 5vw, 60px); letter-spacing: -0.06em; margin: 0 0 24px; }
 .plans-choice > div > p:not(.eyebrow) { color: var(--ink-soft); font-size: 15px; line-height: 1.7; max-width: 470px; }
 .plans-choice .button { margin-top: 26px; }
-.plans-choice form { margin: 0; }
-.plans-price { align-items: baseline; display: flex; gap: 11px; margin-bottom: 20px; }
-.plans-price del { color: var(--ink-faint); font-size: 20px; }
-.plans-price strong { font-size: 48px; letter-spacing: -0.06em; }
-.plans-price span { color: var(--ink-faint); font-size: 13px; }
-.plans-no-recurring { display: block; font-size: 13px; margin-top: 18px; }
 .plans-comparison,
 .plans-path,
 .plans-experience,
@@ -3842,8 +3830,6 @@ svg {
 .plans-final { padding: 100px 0 60px; text-align: center; }
 .plans-final h2 { font-size: clamp(48px, 7vw, 86px); letter-spacing: -0.07em; line-height: 0.95; margin: 0; }
 .plans-final > p:not(.eyebrow) { color: var(--ink-soft); margin: 23px 0 30px; }
-.plans-final form { display: flex; justify-content: center; }
-.purchase-success .button { margin-top: 10px; }
 
 .start-free-page { margin: 0 auto; max-width: 1080px; padding: 90px 56px 110px; }
 .start-free-page > h1 { font-size: clamp(56px, 8vw, 96px); letter-spacing: -0.075em; line-height: 0.91; margin: 0; max-width: 940px; }
@@ -4153,10 +4139,8 @@ svg {
   .review-module-row h2 { font-size: 21px; }
   .review-module-row__action { font-size: 0; }
   .review-module-row__action svg { height: 17px; width: 17px; }
-  .access-page,
-  .purchase-success { padding: 70px 18px 80px; }
-  .access-page h1,
-  .purchase-success h1 { font-size: 53px; }
+  .access-page { padding: 70px 18px 80px; }
+  .access-page h1 { font-size: 53px; }
   .access-page__actions { align-items: stretch; flex-direction: column; }
   .access-page__back { margin: 16px 0 0; }
   .plans-page { padding-top: 52px; }
@@ -4175,7 +4159,6 @@ svg {
   .plans-path article:nth-child(3) { padding-left: 0; }
   .plans-experience > div { grid-template-columns: 1fr; }
   .plans-experience article:nth-child(n) { border-left: 0; padding-left: 0; }
-  .plans-final form { display: block; }
   .plans-final .button { width: 100%; }
   .start-free-page { padding: 60px 18px 80px; }
   .start-free-page > h1 { font-size: 54px; }

@@ -55,4 +55,4 @@ Lesson 4.3 establishes the minimum quality bar by:
 - moving from prediction to guided manipulation, contextual reading, unsupported recall, and original writing
 - providing a lesson-specific goal, duration, feedback path, summary, and completion state
 
-Start Here, Modules 1–3, Lessons 4.1–4.5, and the Stage I checkpoint now use this shared system. The pre-Module-4 lessons are authored through a typed lesson factory that preserves lesson-specific explanations and exercises while keeping the renderer contract consistent. Accounts, database migration, payments, and deployment remain out of scope until these learning experiences are validated.
+Start Here, Modules 1–3, Lessons 4.1–4.5, and the Stage I checkpoint now use this shared system. The pre-Module-4 lessons are authored through a typed lesson factory that preserves lesson-specific explanations and exercises while keeping the renderer contract consistent. Free accounts and account-backed persistence support the learning path; payments are excluded by product decision.

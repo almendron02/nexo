@@ -1,18 +1,8 @@
 import { builtCourseModules, getCourseLesson } from "@/content/course-catalog";
 
-export const FOUNDATIONS_COURSE_ID = "spanish-foundations";
-
-export type CourseEntitlement = {
-  access_type: "lifetime" | "temporary";
-  course_id: string;
-  expires_at: string | null;
-  status: "active" | "refunded" | "revoked" | "expired";
-};
-
 export type LessonAccess =
   | { status: "available" }
   | { status: "account-required" }
-  | { status: "purchase-required" }
   | { status: "prerequisite-required"; prerequisiteId: string; prerequisiteTitle: string }
   | { status: "checkpoint-required"; checkpointHref: string; checkpointTitle: string };
 
@@ -23,11 +13,6 @@ const stageCheckpointBeforeModule: Partial<Record<number, { id: string; href: st
   15: { id: "stage-03-checkpoint", href: "/checkpoint/stage-3", title: "Stage III Checkpoint" },
 };
 
-export function hasActiveCourseEntitlement(entitlement: CourseEntitlement | null | undefined) {
-  if (!entitlement || entitlement.course_id !== FOUNDATIONS_COURSE_ID || entitlement.status !== "active") return false;
-  return !entitlement.expires_at || new Date(entitlement.expires_at).getTime() > Date.now();
-}
-
 export function previousLesson(lessonId: string) {
   const index = lessonsInOrder.findIndex((lesson) => lesson.id === lessonId);
   return index > 0 ? lessonsInOrder[index - 1] : undefined;
@@ -36,18 +21,15 @@ export function previousLesson(lessonId: string) {
 export function lessonAccessFor({
   authenticated,
   completedLessons,
-  entitled,
   lessonId,
 }: {
   authenticated: boolean;
   completedLessons: string[];
-  entitled: boolean;
   lessonId: string;
 }): LessonAccess {
   const courseLesson = getCourseLesson(lessonId);
   if (!courseLesson || courseLesson.module.number === 0) return { status: "available" };
   if (!authenticated) return { status: "account-required" };
-  if (!entitled) return { status: "purchase-required" };
   if (completedLessons.includes(lessonId)) return { status: "available" };
 
   const checkpoint = stageCheckpointBeforeModule[courseLesson.module.number];
@@ -66,16 +48,13 @@ export function lessonAccessFor({
 export function checkpointAccessFor({
   authenticated,
   completedLessons,
-  entitled,
   stage,
 }: {
   authenticated: boolean;
   completedLessons: string[];
-  entitled: boolean;
   stage: number;
 }): LessonAccess {
   if (!authenticated) return { status: "account-required" };
-  if (!entitled) return { status: "purchase-required" };
 
   const moduleCeiling: Record<number, number> = { 1: 4, 2: 9, 3: 14, 4: 16 };
   const required = builtCourseModules

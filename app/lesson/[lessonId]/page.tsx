@@ -15,7 +15,7 @@ export default async function FoundationLessonPage({ params }: { params: Promise
   const lesson = preModule04LessonsById[lessonId] ?? remainingLessonsById[lessonId];
   if (!lesson) notFound();
   const learner = await getLearnerSnapshot();
-  const access = lessonAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, entitled: learner.entitled, lessonId });
+  const access = lessonAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, lessonId });
   if (access.status !== "available") return <AccessResolution access={access} lessonId={lessonId} lessonTitle={lesson.title} />;
   return <LessonExperience lesson={lesson} />;
 }

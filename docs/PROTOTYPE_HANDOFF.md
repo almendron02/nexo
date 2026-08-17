@@ -11,8 +11,8 @@ The reusable instructional sequence and authoring bar are defined in [`LESSON_PA
 ```text
 Public home
   -> complete 16-module course index
-  -> free Start Here module
-  -> account creation before Module 1
+  -> public Start Here module
+  -> free account creation before Module 1
   -> Dashboard
   -> Modules 1–4
   -> next incomplete lesson
@@ -50,7 +50,9 @@ The supporting path is `Dashboard -> Review -> choose a module -> retrieve autho
 - Stage I checkpoint with a soft-gate result
 - local persistence
 - Supabase email/password authentication and refreshed cookie sessions
+- account-backed lesson progress, attempt history, concept evidence, and last-visited position
 - public Module 0 with an account gate before Module 1
+- free access to the complete course with no payment or entitlement gate
 
 ## Simulated or temporary
 
@@ -58,7 +60,7 @@ The supporting path is `Dashboard -> Review -> choose a module -> retrieve autho
 - writing analysis is narrow and rule-based
 - review timing is seeded rather than calendar-driven
 - mastery thresholds are prototype heuristics
-- speaking recording, account-linked progress sync, payments, and analytics are not implemented
+- speaking recording and analytics are not implemented
 
 ## Acceptance criteria
 
@@ -77,4 +79,4 @@ The supporting path is `Dashboard -> Review -> choose a module -> retrieve autho
 1. Run end-to-end beginner usability sessions from Start Here through all 23 available lessons and the checkpoint.
 2. Produce and approve the first versioned human recording pack using `docs/AUDIO_PIPELINE.md`.
 3. Refine content and interaction pacing from observed learner evidence.
-4. Define the owner-scoped Supabase progress schema and migrate the persistence adapter without coupling authored lesson content to the database.
+4. Validate account sync, reconnect behavior, and local Start Here migration with real learners across devices.

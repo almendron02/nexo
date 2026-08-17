@@ -122,7 +122,7 @@ function ReviewPractice({ review, onExit }: { review: ModuleReviewSet; onExit: (
   );
 }
 
-export function ReviewSession({ entitled }: { entitled: boolean }) {
+export function ReviewSession() {
   const state = usePrototypeState();
   const [selectedModule, setSelectedModule] = useState<number | null>(null);
   const review = selectedModule === null ? undefined : moduleReviewSets.find((set) => set.moduleNumber === selectedModule);
@@ -142,7 +142,7 @@ export function ReviewSession({ entitled }: { entitled: boolean }) {
         {moduleReviewSets.map((set) => {
           const lessonIds = new Set(set.items.map((item) => item.lessonId));
           const completedLessons = [...lessonIds].filter((id) => state.completedLessons.includes(id)).length;
-          const available = set.moduleNumber === 0 ? completedLessons > 0 : entitled && completedLessons > 0;
+          const available = completedLessons > 0;
           return (
             <article className="review-module-row" key={set.moduleNumber}>
               <button disabled={!available} onClick={() => setSelectedModule(set.moduleNumber)} type="button">
@@ -150,7 +150,7 @@ export function ReviewSession({ entitled }: { entitled: boolean }) {
                 <div>
                   <p>{set.stageLabel}</p>
                   <h2>{set.title}</h2>
-                  <small>{available ? `${set.items.length} mixed exercises · ${completedLessons}/${lessonIds.size} lessons complete` : set.moduleNumber > 0 && !entitled ? "Included with the complete course" : "Complete a lesson in this module first"}</small>
+                  <small>{available ? `${set.items.length} mixed exercises · ${completedLessons}/${lessonIds.size} lessons complete` : "Complete a lesson in this module first"}</small>
                 </div>
                 <span className="review-module-row__action">{available ? "Practice" : "Locked"} <ArrowRight aria-hidden="true" /></span>
               </button>

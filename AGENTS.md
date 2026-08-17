@@ -7,7 +7,10 @@
 - Teach through `Understand -> Observe -> Practice -> Produce -> Review`, but let the lesson feel like one continuous train of thought.
 - Teach general Latin American Spanish for production. Teach `tú`, `usted`, and `ustedes`; treat `vosotros` as recognition-level in Foundations.
 - Lesson content lives as typed source files in Git. Learner state is accessed behind a persistence boundary.
-- During the prototype, persist locally. Do not add Supabase, authentication, payments, analytics vendors, or AI APIs without a new explicit decision.
+- Nexo is free and open source. Never gate lessons, checkpoints, review, or course progress behind payment or an entitlement.
+- Module 0 is public. Modules 1–16, checkpoints, Dashboard, Review, and Settings require a free account so the learner's course path stays coherent across devices.
+- Supabase Auth and account-linked learner persistence are approved behind the existing persistence boundary. Do not add payments, analytics vendors, or AI APIs without a new explicit decision.
+- Treat the authored curriculum as the shared master grammar source: keep it typed, reviewable, attributable, and separate from learner state.
 - Preserve first attempts. Corrections add evidence; they never overwrite the original attempt.
 - Track evidence by concept, not only by lesson.
 - Prototype mastery may reach `Learning`, `Developing`, or `Solid`. Never award `Retained` without delayed retrieval.

@@ -31,11 +31,11 @@ export function AuthForm({ mode, next, initialError = null }: { mode: "sign-in" 
         <p>
           {isSignIn
             ? "Sign in to open your dashboard, lessons, checkpoints, and review practice."
-            : "Module 0 is free without an account. Create yours to keep your place, then choose lifetime access when you are ready for the complete course."}
+            : "Module 0 is open without an account. Create yours to keep your place and continue through the complete course for free."}
         </p>
         <div className="auth-boundary" aria-label="What an account unlocks">
           <span>Included with your account</span>
-          <p>Your progress · Review history · Course access · Your learning dashboard</p>
+          <p>All 16 modules · Your progress · Review history · Your learning dashboard</p>
         </div>
       </section>
 
@@ -57,7 +57,7 @@ export function AuthForm({ mode, next, initialError = null }: { mode: "sign-in" 
           {state.error ? <p className="auth-error" role="alert">{state.error}</p> : null}
           <SubmitButton label={isSignIn ? "Sign in" : "Create account"} />
         </form>
-        <p className="auth-form-note">Creating an account is free. Spanish Foundations is a separate one-time purchase—never a subscription.</p>
+        <p className="auth-form-note">Creating an account is free. There is no subscription, purchase, or paid course tier.</p>
       </section>
     </div>
   );

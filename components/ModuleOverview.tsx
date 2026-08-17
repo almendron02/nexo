@@ -7,7 +7,7 @@ import { builtCourseModules } from "@/content/course-catalog";
 import { usePrototypeState } from "@/lib/prototype-store";
 import { lessonAccessFor } from "@/lib/course-access";
 
-export function ModuleOverview({ authenticated, entitled }: { authenticated: boolean; entitled: boolean }) {
+export function ModuleOverview({ authenticated }: { authenticated: boolean }) {
   const state = usePrototypeState();
   const completeCount = module04.lessons.filter((lesson) => state.completedLessons.includes(lesson.id)).length;
   const progress = Math.round((completeCount / module04.lessons.length) * 100);
@@ -49,7 +49,7 @@ export function ModuleOverview({ authenticated, entitled }: { authenticated: boo
         <div className="lesson-list">
           {module04.lessons.map((lesson, index) => {
             const completed = state.completedLessons.includes(lesson.id);
-            const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, entitled, lessonId: lesson.id });
+            const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, lessonId: lesson.id });
             const available = access.status === "available";
             const isNext = index === nextLessonIndex;
             return (
@@ -63,7 +63,7 @@ export function ModuleOverview({ authenticated, entitled }: { authenticated: boo
                 </div>
                 <div className="lesson-row__action">
                   <span><Clock3 aria-hidden="true" /> {lesson.durationMinutes} min</span>
-                  {available ? <Link className="round-link" href={`/lesson/${lesson.id}`} aria-label={`${completed ? "Revisit" : "Open"} ${lesson.title}`}><ArrowRight aria-hidden="true" /></Link> : <Link className="locked-label" href={`/lesson/${lesson.id}`}>{access.status === "account-required" ? "Create an account" : access.status === "purchase-required" ? "Get course access" : access.status === "prerequisite-required" ? `Complete ${access.prerequisiteId}` : "Complete checkpoint"}</Link>}
+                  {available ? <Link className="round-link" href={`/lesson/${lesson.id}`} aria-label={`${completed ? "Revisit" : "Open"} ${lesson.title}`}><ArrowRight aria-hidden="true" /></Link> : <Link className="locked-label" href={`/lesson/${lesson.id}`}>{access.status === "account-required" ? "Create a free account" : access.status === "prerequisite-required" ? `Complete ${access.prerequisiteId}` : "Complete checkpoint"}</Link>}
                 </div>
               </article>
             );

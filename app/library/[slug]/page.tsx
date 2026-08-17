@@ -23,5 +23,5 @@ export default async function LibraryGuidePage({ params }: { params: Promise<{ s
   const entry = getLibraryEntry(slug);
   if (!entry) notFound();
   const learner = await getLearnerSnapshot();
-  return <LibraryEntryPage authenticated={Boolean(learner.user)} entitled={learner.entitled} entry={entry} />;
+  return <LibraryEntryPage authenticated={Boolean(learner.user)} entry={entry} />;
 }

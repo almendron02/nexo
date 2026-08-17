@@ -6,6 +6,6 @@ import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export async function ProtectedCheckpoint({ lesson, stage }: { lesson: LessonDefinition; stage: number }) {
   const learner = await getLearnerSnapshot();
-  const access = checkpointAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, entitled: learner.entitled, stage });
+  const access = checkpointAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, stage });
   return access.status === "available" ? <LessonExperience lesson={lesson} /> : <CheckpointGate access={access} stage={stage} />;
 }

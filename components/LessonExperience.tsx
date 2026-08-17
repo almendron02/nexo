@@ -529,8 +529,8 @@ export function LessonExperience({ lesson }: { lesson: LessonDefinition }) {
                 </div>
               ) : completesFreeIntroduction ? (
                 <div className="completion-account-step">
-                  <p>You finished the free introduction. Create an account to begin Module 1 and continue through the complete course.</p>
-                  <div className="completion-actions"><Link className="button button--dark" href="/auth/sign-up?next=/module/1">Create account and continue <ArrowRight aria-hidden="true" /></Link><Link className="button button--ghost" href="/course">View the course map</Link></div>
+                  <p>You finished Start Here. Create a free account to preserve this work and continue through every module, checkpoint, and review set.</p>
+                  <div className="completion-actions"><Link className="button button--dark" href="/auth/sign-up?next=/module/1">Create a free account <ArrowRight aria-hidden="true" /></Link><Link className="button button--ghost" href="/course">View the course map</Link></div>
                 </div>
               ) : <div className="completion-actions"><Link className="button button--dark" href={moduleHref}>Return to {returnLabel} <ArrowRight aria-hidden="true" /></Link><Link className="button button--ghost" href="/dashboard">Done for today</Link></div>}
             </>

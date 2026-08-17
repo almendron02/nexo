@@ -6,7 +6,7 @@ import { getLearnerSnapshot } from "@/lib/learner-data";
 
 export async function ProtectedLesson({ lesson }: { lesson: LessonDefinition }) {
   const learner = await getLearnerSnapshot();
-  const access = lessonAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, entitled: learner.entitled, lessonId: lesson.id });
+  const access = lessonAccessFor({ authenticated: Boolean(learner.user), completedLessons: learner.completedLessons, lessonId: lesson.id });
   return access.status === "available"
     ? <LessonExperience lesson={lesson} />
     : <AccessResolution access={access} lessonId={lesson.id} lessonTitle={lesson.title} />;

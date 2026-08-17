@@ -30,10 +30,12 @@ The learner should experience this as one continuous argument, not as five label
 - General Latin American Spanish is the default production standard.
 - Sixteen modules across four stages, four stage checkpoints, and a separate final assessment.
 - The complete Start Here module (0.1–0.5) is public. Modules 1–16, checkpoints, Dashboard, Review, and Settings require a free account.
+- Every lesson and learning feature is free. Accounts exist for continuity and evidence, never as a payment boundary.
+- The application is open source under MIT. Authored course content is a shared grammar source under CC BY-SA 4.0.
 - Review is primary when due; Continue is primary otherwise.
-- Content stays in Git during the prototype. User state uses `localStorage` behind a persistence boundary.
-- Supabase Auth is the account boundary. Progress remains behind the existing local persistence adapter until account-linked sync is introduced deliberately.
-- Production media storage, payments, and real AI writing analysis remain deferred.
+- Content stays in Git. Learner state remains behind a persistence boundary with a local browser copy.
+- Supabase Auth provides the account boundary. Completed lessons, attempts, concept evidence, and last-visited position sync to the learner's account.
+- Payments are out of scope by product decision. Production media storage and real AI writing analysis remain deferred.
 
 ## Prototype question
 

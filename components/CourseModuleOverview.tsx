@@ -6,7 +6,7 @@ import type { CourseCatalogModule } from "@/content/course-catalog";
 import { usePrototypeState } from "@/lib/prototype-store";
 import { lessonAccessFor } from "@/lib/course-access";
 
-export function CourseModuleOverview({ authenticated, entitled, module }: { authenticated: boolean; entitled: boolean; module: CourseCatalogModule }) {
+export function CourseModuleOverview({ authenticated, module }: { authenticated: boolean; module: CourseCatalogModule }) {
   const state = usePrototypeState();
   const completeCount = module.lessons.filter((lesson) => state.completedLessons.includes(lesson.id)).length;
   const progress = module.available ? Math.round((completeCount / module.lessons.length) * 100) : 0;
@@ -48,7 +48,7 @@ export function CourseModuleOverview({ authenticated, entitled, module }: { auth
         <div className="lesson-list">
           {module.lessons.map((lesson, index) => {
             const completed = state.completedLessons.includes(lesson.id);
-            const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, entitled, lessonId: lesson.id });
+            const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, lessonId: lesson.id });
             const available = module.available && access.status === "available";
             const isNext = module.available && index === nextLessonIndex;
             return (
@@ -59,7 +59,7 @@ export function CourseModuleOverview({ authenticated, entitled, module }: { auth
                 <div className="lesson-row__copy"><div><h3>{lesson.id} · {lesson.title}</h3></div><p>{module.available ? `A full written lesson in ${module.title.toLocaleLowerCase()}.` : "This class is placed in the curriculum and ready for its future full lesson experience."}</p></div>
                 <div className="lesson-row__action">
                   {lesson.durationMinutes ? <span><Clock3 aria-hidden="true" /> {lesson.durationMinutes} min</span> : <span>Planned</span>}
-                  {available ? <Link className="round-link" href={`/lesson/${lesson.id}`} aria-label={`${completed ? "Revisit" : "Open"} ${lesson.title}`}><ArrowRight aria-hidden="true" /></Link> : <Link className="locked-label" href={`/lesson/${lesson.id}`}>{access.status === "account-required" ? "Create an account" : access.status === "purchase-required" ? "Get course access" : access.status === "checkpoint-required" ? `Complete ${access.checkpointTitle}` : access.status === "prerequisite-required" ? `Complete ${access.prerequisiteId}` : "Planned"}</Link>}
+                  {available ? <Link className="round-link" href={`/lesson/${lesson.id}`} aria-label={`${completed ? "Revisit" : "Open"} ${lesson.title}`}><ArrowRight aria-hidden="true" /></Link> : <Link className="locked-label" href={`/lesson/${lesson.id}`}>{access.status === "account-required" ? "Create a free account" : access.status === "checkpoint-required" ? `Complete ${access.checkpointTitle}` : access.status === "prerequisite-required" ? `Complete ${access.prerequisiteId}` : "Planned"}</Link>}
                 </div>
               </article>
             );
