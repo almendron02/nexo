@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { LibrarySourceLessons } from "@/components/LibrarySourceLessons";
 import { SpanishAudio } from "@/components/SpanishAudio";
-import { getCourseLesson } from "@/content/course-catalog";
 import { getLibraryEntry, type LibraryEntry, type LibraryExample } from "@/content/library";
-import { lessonAccessFor } from "@/lib/course-access";
-import { usePrototypeState } from "@/lib/prototype-store";
 
 function AudioExamples({ examples }: { examples: LibraryExample[] }) {
   return (
@@ -20,8 +18,6 @@ function AudioExamples({ examples }: { examples: LibraryExample[] }) {
 }
 
 export function LibraryEntryPage({ authenticated, entry }: { authenticated: boolean; entry: LibraryEntry }) {
-  const state = usePrototypeState();
-  const sources = entry.lessonIds.map((id) => getCourseLesson(id)).filter((source) => source !== undefined);
   const relatedEntries = entry.relatedSlugs.map((slug) => getLibraryEntry(slug)).filter((related) => related !== undefined);
 
   return (
@@ -117,27 +113,7 @@ export function LibraryEntryPage({ authenticated, entry }: { authenticated: bool
         })}
       </div>
 
-      <section className="library-sources" aria-labelledby="library-sources-title">
-        <div>
-          <BookOpen aria-hidden="true" />
-          <p className="eyebrow">Learn it in context</p>
-          <h2 id="library-sources-title">Source lessons</h2>
-        </div>
-        <ol>
-          {sources.map(({ lesson, module }) => {
-            const access = lessonAccessFor({ authenticated, completedLessons: state.completedLessons, lessonId: lesson.id });
-            const label = access.status === "available" ? module.number === 0 ? "Free · Start Here" : `Available · Module ${module.number}` : access.status === "account-required" ? "Free account required" : access.status === "checkpoint-required" ? access.checkpointTitle : `Complete ${access.prerequisiteId} first`;
-            return <li key={lesson.id}>
-              <Link href={`/lesson/${lesson.id}`}>
-                <span>Lesson {lesson.id}</span>
-                <strong>{lesson.title}</strong>
-                <small>{label}</small>
-                <ArrowRight aria-hidden="true" />
-              </Link>
-            </li>;
-          })}
-        </ol>
-      </section>
+      <LibrarySourceLessons authenticated={authenticated} lessonIds={entry.lessonIds} />
 
       <section className="library-related" aria-labelledby="library-related-title">
         <p className="eyebrow">Keep connecting</p>
