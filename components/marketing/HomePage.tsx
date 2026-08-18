@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { NexoMark } from "@/components/AppShell";
-import { RatingBadge } from "@/components/foundations/rating-badge";
+import { NexoMark } from "@/components/NexoMark";
 import { ProgressiveBlur } from "@/components/marketing/ProgressiveBlur";
 import { ScrollProgress } from "@/components/marketing/ScrollProgress";
 import { SpanishFlagLoop } from "@/components/marketing/SpanishFlagLoop";
@@ -64,7 +63,7 @@ export function HomePage() {
               <span>finally connects.</span>
             </h1>
             <p className="home-hero__lede">
-              Learn Spanish in the right order, understand how it works, and practice until you can use it yourself.
+              Learn Spanish grammar in the right order, understand how it works, and practice until you can use it yourself.
             </p>
             <div className="home-hero__actions">
               <Link className="home-button home-button--primary" href="/start">
@@ -146,9 +145,6 @@ export function HomePage() {
               </p>
               <cite>Angel González · Creator of Nexo</cite>
             </blockquote>
-          </div>
-          <div className="home-accreditation__rating">
-            <RatingBadge rating={5} title="Best Learning Tool" subtitle="100+ reviews" />
           </div>
         </section>
 

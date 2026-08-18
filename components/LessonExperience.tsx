@@ -24,6 +24,7 @@ import type {
   ProseBlock,
   ReadingBlock,
   SortBlock,
+  StoryFillBlock,
   SummaryBlock,
 } from "@/content/schemas";
 import { SpanishAudio } from "@/components/SpanishAudio";
@@ -33,7 +34,26 @@ import { completeLesson, recordAttempt, usePrototypeState } from "@/lib/prototyp
 
 type CompleteHandler = (blockId: string) => void;
 
-const interactiveTypes = new Set(["choice", "sort", "builder", "reading", "fill", "free-write"]);
+const interactiveTypes = new Set(["choice", "sort", "builder", "reading", "fill", "story-fill", "free-write"]);
+
+function questionCountForBlock(block: LessonBlock) {
+  switch (block.type) {
+    case "choice":
+    case "builder":
+    case "free-write":
+      return 1;
+    case "sort":
+      return block.items.length;
+    case "reading":
+      return block.questions.length;
+    case "fill":
+      return block.items.length;
+    case "story-fill":
+      return block.verses.reduce((total, verse) => total + verse.parts.filter((part) => part.type === "blank").length, 0);
+    default:
+      return 0;
+  }
+}
 
 function BlockFrame({ children, id, className = "" }: { children: React.ReactNode; id: string; className?: string }) {
   return <section className={`lesson-block ${className}`} id={id}>{children}</section>;
@@ -357,6 +377,101 @@ function FillSection({ block, onComplete }: { block: FillBlock; onComplete: Comp
   );
 }
 
+function StoryFillSection({ block, onComplete }: { block: StoryFillBlock; onComplete: CompleteHandler }) {
+  const blanks = block.verses.flatMap((verse) => verse.parts.filter((part) => part.type === "blank"));
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [results, setResults] = useState<Record<string, boolean>>({});
+  const [activeItemId, setActiveItemId] = useState(blanks[0]?.id ?? "");
+
+  const updateValue = (itemId: string, value: string) => {
+    setValues((current) => ({ ...current, [itemId]: value }));
+    setResults((current) => {
+      const next = { ...current };
+      delete next[itemId];
+      return next;
+    });
+  };
+
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    const next = { ...results };
+    const attemptedResults: boolean[] = [];
+    blanks.forEach((item) => {
+      if (results[item.id]) return;
+      const value = (values[item.id] ?? "").trim();
+      if (!value) return;
+      const normalized = value.toLocaleLowerCase("es");
+      const correct = item.accepted.some((accepted) => accepted.toLocaleLowerCase("es") === normalized);
+      next[item.id] = correct;
+      attemptedResults.push(correct);
+      recordAttempt({
+        interactionId: `${block.id}:${item.id}`,
+        answer: value,
+        correct,
+        kind: "fill",
+        conceptIds: item.conceptIds,
+        independent: true,
+      });
+    });
+    if (attemptedResults.length) playAnswerFeedback(attemptedResults.every(Boolean) ? "correct" : "incorrect");
+    setResults(next);
+    if (blanks.every((item) => next[item.id])) onComplete(block.id);
+  };
+
+  return (
+    <BlockFrame id={block.id} className="lesson-block--wide lesson-block--interaction story-fill-block">
+      <BlockHeading eyebrow={block.eyebrow} heading={block.heading} />
+      <p className="interaction-prompt">{block.prompt}</p>
+      <form onSubmit={submit}>
+        <article className="story-fill-passage" lang="es">
+          {block.verses.map((verse) => {
+            const verseBlanks = verse.parts.filter((part) => part.type === "blank");
+            const attempted = verseBlanks.filter((item) => results[item.id] !== undefined);
+            return (
+              <div className="story-fill-verse" key={verse.number}>
+                <p><sup>{verse.number}</sup>{verse.parts.map((part, index) => part.type === "text" ? (
+                  <span key={`${verse.number}-text-${index}`}>{part.text}</span>
+                ) : (
+                  <span className="story-fill-blank" key={part.id}>
+                    <input
+                      aria-label={`Verse ${verse.number}: past tense of ${part.infinitive}`}
+                      autoCapitalize="none"
+                      autoComplete="off"
+                      className={results[part.id] === true ? "is-correct" : results[part.id] === false ? "is-wrong" : ""}
+                      disabled={results[part.id] === true}
+                      onChange={(event) => updateValue(part.id, event.target.value)}
+                      onFocus={() => setActiveItemId(part.id)}
+                      value={values[part.id] ?? ""}
+                    />
+                    <small>({part.infinitive})</small>
+                    {results[part.id] === true ? <Check aria-label="Correct" /> : null}
+                  </span>
+                ))}</p>
+                {attempted.length ? (
+                  <ul className="story-fill-feedback" aria-live="polite">
+                    {attempted.map((item) => <li className={results[item.id] ? "is-correct" : "is-wrong"} key={item.id}><strong>{results[item.id] ? item.answer : item.infinitive}</strong>: {results[item.id] ? item.feedback : "Match the subject and the story viewpoint, then try this form again."}</li>)}
+                  </ul>
+                ) : null}
+              </div>
+            );
+          })}
+        </article>
+        <SpanishTypingHelp
+          disabled={!activeItemId || results[activeItemId] === true}
+          onCharacter={(character) => {
+            if (!activeItemId) return;
+            updateValue(activeItemId, `${values[activeItemId] ?? ""}${character}`);
+          }}
+        />
+        <div className="story-fill-footer">
+          <p>{block.sourceNote} <a href={block.sourceHref} rel="noreferrer" target="_blank">Read the public-domain source.</a></p>
+          <button className="button button--dark" type="submit">Check my story</button>
+        </div>
+      </form>
+    </BlockFrame>
+  );
+}
+
 function FreeWriteSection({ block, onComplete }: { block: FreeWriteBlock; onComplete: CompleteHandler }) {
   const [value, setValue] = useState("");
   const [exampleOpen, setExampleOpen] = useState(false);
@@ -431,6 +546,7 @@ function RenderBlock({ block, onComplete }: { block: LessonBlock; onComplete: Co
     case "builder": return <BuilderSection block={block} onComplete={onComplete} />;
     case "reading": return <ReadingSection block={block} onComplete={onComplete} />;
     case "fill": return <FillSection block={block} onComplete={onComplete} />;
+    case "story-fill": return <StoryFillSection block={block} onComplete={onComplete} />;
     case "free-write": return <FreeWriteSection block={block} onComplete={onComplete} />;
     case "summary": return <SummarySection block={block} />;
   }
@@ -440,7 +556,6 @@ export function LessonExperience({ lesson }: { lesson: LessonDefinition }) {
   const state = usePrototypeState();
   const [started, setStarted] = useState(false);
   const [completedBlocks, setCompletedBlocks] = useState<Set<string>>(new Set());
-  const [finished, setFinished] = useState(state.completedLessons.includes(lesson.id));
   const interactiveCount = lesson.blocks.filter((block) => interactiveTypes.has(block.type)).length;
   const progress = started ? Math.max(4, Math.round((completedBlocks.size / interactiveCount) * 100)) : 0;
   const lessonAttempts = state.attempts.filter((attempt) => lesson.blocks.some((block) => attempt.interactionId.startsWith(block.id)));
@@ -456,7 +571,14 @@ export function LessonExperience({ lesson }: { lesson: LessonDefinition }) {
   const contextLabel = experience?.contextLabel ?? `Module ${moduleNumber} · Lesson ${lessonNumber}`;
   const openingMarker = experience?.openingMarker ?? `${moduleNumber.padStart(2, "0")} / ${lessonNumber.padStart(2, "0")}`;
   const firstAttemptAccuracy = firstAttempts.length ? firstCorrect / firstAttempts.length : 0;
-  const checkpointReady = firstAttemptAccuracy >= 0.75 && independentCorrect >= 3 && writingComplete;
+  const totalQuestions = lesson.blocks.reduce((total, block) => total + questionCountForBlock(block), 0);
+  const pointsPerQuestion = experience?.grading?.pointsPerQuestion ?? 0;
+  const pointsPossible = totalQuestions * pointsPerQuestion;
+  const pointsEarned = firstCorrect * pointsPerQuestion;
+  const gradePercentage = pointsPossible ? Math.round((pointsEarned / pointsPossible) * 100) : Math.round(firstAttemptAccuracy * 100);
+  const checkpointReady = gradePercentage >= (experience?.grading?.passingPercentage ?? 75);
+  const savedCompletionMatchesExam = !isCheckpoint || !experience?.grading || firstAttempts.length >= totalQuestions;
+  const [finished, setFinished] = useState(state.completedLessons.includes(lesson.id) && savedCompletionMatchesExam);
   const completesFreeIntroduction = lesson.id === "0.5";
 
   const markComplete: CompleteHandler = (blockId) => {
@@ -517,11 +639,19 @@ export function LessonExperience({ lesson }: { lesson: LessonDefinition }) {
               <p className="eyebrow">{isCheckpoint ? "Checkpoint complete" : "Lesson complete"}</p>
               <h2>{isCheckpoint && !checkpointReady ? lesson.completion.reviewTitle : lesson.completion.title}</h2>
               <p>{isCheckpoint && !checkpointReady ? lesson.completion.reviewMessage : lesson.completion.message}</p>
-              <div className="result-grid">
-                <article><span>First attempts</span><strong>{firstCorrect} / {Math.max(firstAttempts.length, 1)}</strong><small>correct before retry</small></article>
-                <article><span>Independent recall</span><strong>{independentCorrect}</strong><small>ideas retrieved</small></article>
-                <article><span>Original Spanish</span><strong>{writingComplete ? "Done" : "Revisit"}</strong><small>production evidence</small></article>
-              </div>
+              {isCheckpoint ? (
+                <div className="result-grid result-grid--grade">
+                  <article><span>Grade</span><strong>{gradePercentage}%</strong><small>percentage out of 100</small></article>
+                  <article><span>Points</span><strong>{pointsEarned} / {pointsPossible}</strong><small>{pointsPerQuestion} points per question</small></article>
+                  <article><span>First attempts</span><strong>{firstCorrect} / {totalQuestions}</strong><small>corrections do not replace them</small></article>
+                </div>
+              ) : (
+                <div className="result-grid">
+                  <article><span>First attempts</span><strong>{firstCorrect} / {Math.max(firstAttempts.length, 1)}</strong><small>correct before retry</small></article>
+                  <article><span>Independent recall</span><strong>{independentCorrect}</strong><small>ideas retrieved</small></article>
+                  <article><span>Original Spanish</span><strong>{writingComplete ? "Done" : "Revisit"}</strong><small>production evidence</small></article>
+                </div>
+              )}
               {isCheckpoint ? (
                 <div className="completion-actions">
                   {!checkpointReady ? <Link className="button button--dark" href="/review">Review these ideas <ArrowRight aria-hidden="true" /></Link> : null}

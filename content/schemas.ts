@@ -234,6 +234,34 @@ export interface FillBlock extends BlockBase {
   }>;
 }
 
+export interface StoryFillBlank {
+  type: "blank";
+  id: string;
+  answer: string;
+  accepted: string[];
+  infinitive: string;
+  conceptIds: ConceptId[];
+  feedback: string;
+}
+
+export interface StoryFillText {
+  type: "text";
+  text: string;
+}
+
+export interface StoryFillBlock extends BlockBase {
+  type: "story-fill";
+  eyebrow?: string;
+  heading: string;
+  prompt: string;
+  verses: Array<{
+    number: number;
+    parts: Array<StoryFillText | StoryFillBlank>;
+  }>;
+  sourceNote: string;
+  sourceHref: string;
+}
+
 export interface FreeWriteBlock extends BlockBase {
   type: "free-write";
   eyebrow?: string;
@@ -268,6 +296,7 @@ export type LessonBlock =
   | BuilderBlock
   | ReadingBlock
   | FillBlock
+  | StoryFillBlock
   | FreeWriteBlock
   | SummaryBlock;
 
@@ -293,5 +322,9 @@ export interface LessonDefinition {
     openingMarker: string;
     returnHref: string;
     returnLabel: string;
+    grading?: {
+      pointsPerQuestion: number;
+      passingPercentage: number;
+    };
   };
 }

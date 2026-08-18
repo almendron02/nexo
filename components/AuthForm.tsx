@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { ArrowRight } from "lucide-react";
-import { signInAction, signUpAction, type AuthActionState } from "@/app/auth/actions";
+import { signInAction, signUpAction, type AuthActionState } from "@/app/(course)/auth/actions";
 
 const initialState: AuthActionState = { error: null };
 

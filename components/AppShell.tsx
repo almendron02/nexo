@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOutAction } from "@/app/auth/actions";
+import { signOutAction } from "@/app/(course)/auth/actions";
+import { NexoMark } from "@/components/NexoMark";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
@@ -13,15 +13,6 @@ const navItems = [
   { href: "/review", label: "Review" },
   { href: "/settings", label: "Settings" },
 ];
-
-export function NexoMark({ className = "app-wordmark" }: { className?: string }) {
-  return (
-    <Link className={className} href="/" aria-label="Nexo home">
-      <Image alt="" aria-hidden="true" className="nexo-logo" height={40} priority src="/brand/nexo-mark.png" width={40} />
-      <strong>Nexo</strong>
-    </Link>
-  );
-}
 
 export function AppShell({ children, userEmail }: { children: React.ReactNode; userEmail: string | null }) {
   const pathname = usePathname();

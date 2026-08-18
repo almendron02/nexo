@@ -9,8 +9,6 @@ type ProgressiveBlurProps = {
 export function ProgressiveBlur({ className, height = "56px" }: ProgressiveBlurProps) {
   const style: CSSProperties = {
     height,
-    backdropFilter: "blur(10px)",
-    WebkitBackdropFilter: "blur(10px)",
     maskImage: "linear-gradient(to bottom, black, transparent)",
     WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
   };

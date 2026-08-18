@@ -6,7 +6,7 @@ Nexo is a complete, structured Spanish course for English speakers who want to l
 
 **Brand line:** Spanish, understood.
 
-**Course promise:** Learn Spanish in the right order, understand how it works, and practice until you can use it yourself.
+**Course promise:** Learn Spanish grammar in the right order, understand how it works, and practice until you can use it yourself.
 
 ## Audience
 

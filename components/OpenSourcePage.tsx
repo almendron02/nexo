@@ -43,7 +43,7 @@ export function OpenSourcePage() {
       <section className="plans-comparison" aria-labelledby="open-source-included-title">
         <div className="plans-comparison__heading">
           <p className="eyebrow">The learning contract</p>
-          <h2 id="open-source-included-title">Free does not mean unfinished.</h2>
+          <h2 id="open-source-included-title">Free, complete, and open to everyone.</h2>
         </div>
         <div className="plans-table" role="table" aria-label="What Nexo includes">
           <div className="plans-table__head" role="row"><span role="columnheader">Spanish Foundations</span><strong role="columnheader">Included</strong><strong role="columnheader">Cost</strong></div>
@@ -53,7 +53,7 @@ export function OpenSourcePage() {
 
       <section className="plans-path" aria-labelledby="open-source-path-title">
         <p className="eyebrow">One source of truth</p>
-        <h2 id="open-source-path-title">A course with a beginning, a path, and a finish.</h2>
+        <h2 id="open-source-path-title">A course with a beginning, a path, and an end.</h2>
         <div>
           {[
             ["01", "Authored in Git", "Typed lesson files keep grammar explanations reviewable and versioned."],

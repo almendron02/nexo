@@ -8,7 +8,6 @@ function requiresAccount(pathname: string) {
 }
 
 export async function proxy(request: NextRequest) {
-  const { authenticated, response } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
 
   const confirmationCode = pathname === "/" ? request.nextUrl.searchParams.get("code") : null;
@@ -16,10 +15,14 @@ export async function proxy(request: NextRequest) {
     const callbackUrl = new URL("/auth/callback", request.url);
     callbackUrl.searchParams.set("code", confirmationCode);
     callbackUrl.searchParams.set("next", safeNextPath(request.cookies.get("nexo-auth-next")?.value));
-    const redirect = NextResponse.redirect(callbackUrl);
-    response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
-    return redirect;
+    return NextResponse.redirect(callbackUrl);
   }
+
+  // The marketing homepage has no account-aware UI. Avoid placing Supabase
+  // session validation on its critical response path.
+  if (pathname === "/") return NextResponse.next();
+
+  const { authenticated, response } = await updateSession(request);
 
   if (!authenticated && requiresAccount(pathname)) {
     const signInUrl = request.nextUrl.clone();
