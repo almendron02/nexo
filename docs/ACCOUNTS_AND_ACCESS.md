@@ -21,6 +21,11 @@ Supabase provides email/password authentication and account-scoped storage for:
 - immutable learner attempts; and
 - concept-level evidence.
 
+Learners can export their browser copy as JSON and erase browser and synced
+course records from Settings. Account deletion remains a verified support
+request because removing the Auth user requires server-side administrative
+authority that is never exposed to the browser.
+
 The browser keeps a local copy behind the same persistence boundary for responsive interactions. When a learner creates an account after Start Here, Module 0 progress is merged into that account rather than discarded.
 
 Row Level Security restricts each learner to their own records. The browser uses only the public Supabase URL and publishable key; no service-role or payment secrets are part of the application.
@@ -33,6 +38,11 @@ Row Level Security restricts each learner to their own records. The browser uses
 
 Contributions to grammar content should trace a correction through explanation, examples, practice, production, review, and later dependent lessons. Nexo should remain one coherent course, not become an unordered collection of grammar notes.
 
-## Legacy schema note
+## Legacy schema boundary
 
-The existing migration contains `course_entitlements` and `purchases` tables from an earlier paid-access experiment. Runtime code no longer reads or writes those tables. Do not drop historical payment records from a deployed database without an explicit retention and migration decision.
+The earlier `course_entitlements` and `purchases` tables remain dormant. A live
+schema check on August 19, 2026 confirmed that both contained zero rows, and no
+runtime code reads or writes them. They must not be removed from a deployed
+database without separate approval for that destructive schema change. Nexo
+does not currently collect payment, entitlement, coupon, or advertising-profile
+data.

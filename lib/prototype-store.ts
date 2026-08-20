@@ -159,6 +159,25 @@ export function resolveReviewItem(itemId: string) {
   });
 }
 
-export function resetPrototype() {
+export function exportPrototypeData() {
+  return JSON.stringify(readStoredState(), null, 2);
+}
+
+export async function erasePrototypeData() {
+  if (authenticatedUserId) {
+    const supabase = createClient();
+    const userId = authenticatedUserId;
+    const results = await Promise.all([
+      supabase.from("concept_evidence").delete().eq("user_id", userId),
+      supabase.from("learner_attempts").delete().eq("user_id", userId),
+      supabase.from("lesson_progress").delete().eq("user_id", userId),
+      supabase.from("learner_profiles").delete().eq("user_id", userId),
+    ]);
+    if (results.some((result) => result.error)) {
+      return { error: "Nexo could not erase the synced copy. Nothing was cleared; please try again or contact support." };
+    }
+  }
+
   writeState(defaultPrototypeState);
+  return { error: null };
 }

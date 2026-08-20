@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Mail } from "lucide-react";
 
-export const metadata: Metadata = { title: "Check your email — Nexo" };
+export const metadata: Metadata = { title: "Check your email" };
 
 export default function CheckEmailPage() {
   return (

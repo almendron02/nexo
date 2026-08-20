@@ -52,12 +52,18 @@ export function AuthForm({ mode, next, initialError = null }: { mode: "sign-in" 
           </label>
           <label>
             <span>Password</span>
-            <input autoComplete={isSignIn ? "current-password" : "new-password"} minLength={isSignIn ? undefined : 8} name="password" placeholder={isSignIn ? "Your password" : "At least 8 characters"} required type="password" />
+            <input autoComplete={isSignIn ? "current-password" : "new-password"} minLength={isSignIn ? undefined : 12} name="password" placeholder={isSignIn ? "Your password" : "At least 12 characters"} required type="password" />
           </label>
+          {!isSignIn ? (
+            <label className="auth-consent">
+              <input name="terms" required type="checkbox" value="accepted" />
+              <span>I agree to the <Link href="/terms" target="_blank">Terms of Use</Link> and acknowledge the <Link href="/privacy" target="_blank">Privacy Notice</Link>.</span>
+            </label>
+          ) : null}
           {state.error ? <p className="auth-error" role="alert">{state.error}</p> : null}
           <SubmitButton label={isSignIn ? "Sign in" : "Create account"} />
         </form>
-        <p className="auth-form-note">Creating an account is free. There is no subscription, purchase, or paid course tier.</p>
+        <p className="auth-form-note">Creating an account is free. There is no subscription, purchase, paid course tier, advertising tracker, or AI grading of your answers.</p>
       </section>
     </div>
   );

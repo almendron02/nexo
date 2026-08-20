@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Gauge, Volume2 } from "lucide-react";
-import { resetPrototype } from "@/lib/prototype-store";
+import { ArrowLeft, Download, Gauge, Volume2 } from "lucide-react";
+import { erasePrototypeData, exportPrototypeData } from "@/lib/prototype-store";
+import { contactEmail } from "@/lib/site";
 import {
   getSpanishAudioPreferences,
   getSpanishVoiceOptions,
@@ -20,7 +21,7 @@ const VOICE_PREVIEW = "Hola. Escucha el ritmo natural de esta frase en español.
 
 export function SettingsPage() {
   const [confirmingReset, setConfirmingReset] = useState(false);
-  const [resetComplete, setResetComplete] = useState(false);
+  const [resetStatus, setResetStatus] = useState<{ type: "complete" | "error"; message: string } | null>(null);
   const [voices, setVoices] = useState<SpanishVoiceOption[]>([]);
   const [voicesLoading, setVoicesLoading] = useState(true);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string | null>(null);
@@ -55,10 +56,22 @@ export function SettingsPage() {
     };
   }, []);
 
-  const resetCourse = () => {
-    resetPrototype();
+  const resetCourse = async () => {
+    const result = await erasePrototypeData();
     setConfirmingReset(false);
-    setResetComplete(true);
+    setResetStatus(result.error
+      ? { type: "error", message: result.error }
+      : { type: "complete", message: "Course records were erased from this browser and your synced account copy." });
+  };
+
+  const downloadCourseData = () => {
+    const blob = new Blob([exportPrototypeData()], { type: "application/json" });
+    const href = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = href;
+    anchor.download = `nexo-course-data-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(href);
   };
 
   const chooseVoice = (voiceURI: string | null) => {
@@ -155,36 +168,42 @@ export function SettingsPage() {
 
       <section className="settings-section" aria-labelledby="profile-settings-title">
         <div className="settings-section__heading">
-          <h2 id="profile-settings-title">Profile</h2>
-          <p>Your local prototype identity.</p>
+          <h2 id="profile-settings-title">Account and privacy</h2>
+          <p>What Nexo keeps and what it does not.</p>
         </div>
         <dl className="settings-list">
-          <div><dt>Name</dt><dd>Angel</dd></div>
           <div><dt>Course</dt><dd>Spanish Foundations</dd></div>
-          <div><dt>Storage</dt><dd>This device only</dd></div>
+          <div><dt>Storage</dt><dd>Browser copy + account sync</dd></div>
+          <div><dt>Analytics</dt><dd>No GA4 or ad trackers</dd></div>
+          <div><dt>AI use</dt><dd>Answers are not sent to AI</dd></div>
         </dl>
       </section>
 
       <section className="settings-section settings-section--data" aria-labelledby="data-settings-title">
         <div className="settings-section__heading">
-          <h2 id="data-settings-title">Prototype data</h2>
-          <p>Reset lesson attempts, concept evidence, and review progress.</p>
+          <h2 id="data-settings-title">Your course data</h2>
+          <p>Export or erase lessons, attempts, concept evidence, and review progress.</p>
         </div>
         <div className="settings-data-action">
+          <div className="settings-data-buttons">
+            <button className="settings-button" type="button" onClick={downloadCourseData}><Download aria-hidden="true" /> Download course data</button>
+            {!confirmingReset ? (
+              <button className="settings-button" type="button" onClick={() => { setConfirmingReset(true); setResetStatus(null); }}>
+                Erase course data
+              </button>
+            ) : null}
+          </div>
           {confirmingReset ? (
             <div className="settings-confirm" role="group" aria-label="Confirm prototype reset">
-              <p>This cannot be undone. Reset the local course data?</p>
+              <p>This cannot be undone. Erase the browser copy and all account-linked lesson progress, original attempts, and concept evidence?</p>
               <div>
                 <button className="settings-button" type="button" onClick={() => setConfirmingReset(false)}>Cancel</button>
-                <button className="settings-button settings-button--danger" type="button" onClick={resetCourse}>Reset now</button>
+                <button className="settings-button settings-button--danger" type="button" onClick={() => void resetCourse()}>Erase now</button>
               </div>
             </div>
-          ) : (
-            <button className="settings-button" type="button" onClick={() => { setConfirmingReset(true); setResetComplete(false); }}>
-              Reset course data
-            </button>
-          )}
-          {resetComplete ? <p className="settings-status" role="status">Course data reset.</p> : null}
+          ) : null}
+          {resetStatus ? <p className={resetStatus.type === "error" ? "settings-status is-error" : "settings-status"} role="status">{resetStatus.message}</p> : null}
+          <p className="settings-data-note">Erasing course data does not delete the sign-in account. To delete the account and email identifier, send a request to <a href={`mailto:${contactEmail}?subject=Nexo%20account%20deletion`}>{contactEmail}</a>. See the <Link href="/privacy">Privacy Notice</Link>.</p>
         </div>
       </section>
     </div>

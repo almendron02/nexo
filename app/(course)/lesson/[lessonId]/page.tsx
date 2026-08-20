@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LessonExperience } from "@/components/LessonExperience";
 import { AccessResolution } from "@/components/AccessResolution";
@@ -5,9 +6,27 @@ import { lessonAccessFor } from "@/lib/course-access";
 import { getLearnerSnapshot } from "@/lib/learner-data";
 import { preModule04LessonDefinitions, preModule04LessonsById } from "@/content/spanish-foundations/stage-01";
 import { remainingLessonDefinitions, remainingLessonsById } from "@/content/spanish-foundations/stages-02-04";
+import { getCourseLesson } from "@/content/course-catalog";
+import { publicPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return [...preModule04LessonDefinitions, ...remainingLessonDefinitions].map((lesson) => ({ lessonId: lesson.id }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }): Promise<Metadata> {
+  const { lessonId } = await params;
+  const catalogEntry = getCourseLesson(lessonId);
+  if (!catalogEntry) return {};
+  const isPublic = lessonId.startsWith("0.");
+  const title = `Lesson ${lessonId}: ${catalogEntry.lesson.title}`;
+  if (isPublic) {
+    return publicPageMetadata(title, catalogEntry.module.description, `/lesson/${lessonId}`);
+  }
+  return {
+    title,
+    description: catalogEntry.module.description,
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function FoundationLessonPage({ params }: { params: Promise<{ lessonId: string }> }) {

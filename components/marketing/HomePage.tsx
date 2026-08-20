@@ -45,7 +45,7 @@ export function HomePage() {
             <Link href="/library">Library</Link>
             <Link href="/course">Course</Link>
             <Link href="/open-source">Open source</Link>
-            <a href="#accreditation">About</a>
+            <Link href="/about">About</Link>
           </div>
           <Link className="home-nav__cta" href="/auth/sign-in?next=/dashboard">
             Sign in <ArrowRight aria-hidden="true" />
@@ -73,6 +73,11 @@ export function HomePage() {
                 See the complete course
               </Link>
             </div>
+            <ul className="home-trust-strip" aria-label="Nexo commitments">
+              <li><Check aria-hidden="true" /> Complete 16-module path</li>
+              <li><Check aria-hidden="true" /> Free with no paid tier</li>
+              <li><Check aria-hidden="true" /> No ads or analytics trackers</li>
+            </ul>
           </div>
 
         </section>
@@ -122,9 +127,9 @@ export function HomePage() {
           </div>
         </section>
 
-        <section className="home-accreditation" id="accreditation" aria-labelledby="accreditation-title">
+        <section className="home-accreditation" id="about" aria-labelledby="accreditation-title">
           <div className="home-accreditation__intro">
-            <p className="home-kicker">Student-made at Auburn University</p>
+            <p className="home-kicker">Built independently by an Auburn student</p>
             <h2 id="accreditation-title">Built from lived Spanish.</h2>
           </div>
           <div className="home-accreditation__story">
@@ -138,6 +143,7 @@ export function HomePage() {
               <p>
                 For students pursuing careers in healthcare, business, engineering, education, public service, and beyond, Spanish can become both a practical <strong>professional advantage</strong> and a meaningful <strong>bridge to the people</strong> they will serve.
               </p>
+              <p className="home-accreditation__disclosure">Nexo is an independent open-source project. It is not an Auburn University program and is not endorsed by the university.</p>
             </div>
             <blockquote className="home-accreditation__quote">
               <p>
@@ -199,6 +205,60 @@ export function HomePage() {
           </div>
         </section>
 
+        <section className="home-section home-trust" aria-labelledby="home-trust-title">
+          <div className="home-section__intro">
+            <p className="home-kicker">Trust through restraint</p>
+            <h2 id="home-trust-title">Your learning is not the product.</h2>
+          </div>
+          <div className="home-audiences">
+            <div>
+              <span>01</span>
+              <h3>Human-authored learning.</h3>
+              <p>Lessons and feedback are typed, reviewable course content. Nexo does not send your answers to an AI service or use them to train a model.</p>
+            </div>
+            <div>
+              <span>02</span>
+              <h3>Only the data the course needs.</h3>
+              <p>A free account stores your email, completed lessons, original attempts, concept evidence, and review history so your course path survives across devices.</p>
+            </div>
+            <div>
+              <span>03</span>
+              <h3>No advertising profile.</h3>
+              <p>Nexo does not run advertising pixels, sell learner data, or install Google Analytics. Read the plain-language privacy notice before creating an account.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-section home-faq" id="faq" aria-labelledby="home-faq-title">
+          <div className="home-section__intro">
+            <p className="home-kicker">Common questions</p>
+            <h2 id="home-faq-title">The clear answers.</h2>
+          </div>
+          <div className="home-faq__list">
+            <details>
+              <summary>Is Nexo really free?</summary>
+              <p>Yes. Start Here, all sixteen modules, checkpoints, Review, and future course improvements are free. There is no subscription or paid lesson tier.</p>
+            </details>
+            <details>
+              <summary>Which Spanish does Nexo teach?</summary>
+              <p>Nexo teaches general Latin American Spanish for production, including tú, usted, and ustedes. Vosotros appears only for recognition in Foundations.</p>
+            </details>
+            <details>
+              <summary>Why does Nexo require an account after Start Here?</summary>
+              <p>The course depends on ordered progress, preserved first attempts, concept evidence, and delayed review. An account keeps that record coherent across devices.</p>
+            </details>
+            <details>
+              <summary>Does Nexo use AI on my answers?</summary>
+              <p>No. Feedback is authored and rule-based. Learner responses are not sent to an AI API, used for automated high-impact decisions, or used to train an AI model.</p>
+            </details>
+            <details>
+              <summary>Can I inspect or reuse the course?</summary>
+              <p>Yes. The application code is MIT licensed, and authored course content is available under CC BY-SA 4.0 with attribution and share-alike requirements.</p>
+            </details>
+            <Link className="home-faq__more" href="/faq">Read every answer <ArrowRight aria-hidden="true" /></Link>
+          </div>
+        </section>
+
         <section className="home-final">
           <p className="home-kicker">Spanish, understood.</p>
           <h2>The goal is not to keep you in an app.</h2>
@@ -215,9 +275,23 @@ export function HomePage() {
       </main>
 
       <footer className="home-footer">
-        <NexoMark className="home-wordmark" />
-        <p>Spanish, understood.</p>
+        <div>
+          <NexoMark className="home-wordmark" />
+          <p>Spanish, understood.</p>
+        </div>
+        <nav aria-label="Footer navigation">
+          <Link href="/about">About</Link>
+          <Link href="/faq">FAQ</Link>
+          <Link href="/contact">Contact</Link>
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+        </nav>
+        <p>© 2026 Nexo</p>
       </footer>
+
+      <Link className="home-mobile-cta" href="/start">
+        Start learning <ArrowRight aria-hidden="true" />
+      </Link>
     </div>
   );
 }

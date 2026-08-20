@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AuthForm } from "@/components/AuthForm";
 import { safeNextPath } from "@/lib/auth-navigation";
 
-export const metadata: Metadata = { title: "Sign in — Nexo" };
+export const metadata: Metadata = { title: "Sign in" };
 
 export default async function SignInPage({ searchParams }: { searchParams: Promise<{ error?: string | string[]; next?: string | string[] }> }) {
   const params = await searchParams;

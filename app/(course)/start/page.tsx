@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, CircleUserRound, Route } from "lucide-react";
+import { publicPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = publicPageMetadata(
+  "Start Learning Spanish for Free",
+  "Begin Nexo with five free lessons on Spanish sounds, stress, spelling, and your first conversation. No account is required for Start Here.",
+  "/start",
+);
 
 export default function StartFreePage() {
   return (

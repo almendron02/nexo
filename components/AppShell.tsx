@@ -9,6 +9,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/library", label: "Library" },
   { href: "/course", label: "Course" },
+  { href: "/about", label: "About" },
   { href: "/open-source", label: "Open source" },
   { href: "/review", label: "Review" },
   { href: "/settings", label: "Settings" },
@@ -63,6 +64,17 @@ export function AppShell({ children, userEmail }: { children: React.ReactNode; u
         </header>
       ) : null}
       <main className="app-main">{children}</main>
+      {!immersive ? (
+        <footer className="app-legal-footer">
+          <p>© 2026 Nexo · Free and open source</p>
+          <nav aria-label="Legal and support">
+            <Link href="/faq">FAQ</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+          </nav>
+        </footer>
+      ) : null}
     </div>
   );
 }

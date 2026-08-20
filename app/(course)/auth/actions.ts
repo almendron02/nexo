@@ -40,7 +40,8 @@ export async function signUpAction(_state: AuthActionState = initialError, formD
   const next = safeNextPath(formData.get("next"), "/module/1");
 
   if (!validEmail(email)) return { error: "Enter a valid email address." };
-  if (password.length < 8) return { error: "Use at least 8 characters for your password." };
+  if (password.length < 12) return { error: "Use at least 12 characters for your password." };
+  if (formData.get("terms") !== "accepted") return { error: "Please accept the Terms of Use and acknowledge the Privacy Notice." };
 
   const requestHeaders = await headers();
   const origin = requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
